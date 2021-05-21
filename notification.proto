@@ -1,0 +1,228 @@
+syntax = "proto3";
+
+import "core.proto";
+
+option go_package = "proto";
+
+package proto;
+
+service Notification {
+  // create
+  rpc CreateNotificationGroup(NotificationRequest) returns (NotificationResponse) {}
+  rpc CreateNotificationGroupMember(NotificationRequest) returns (NotificationResponse) {}
+  rpc SendNotification(NotificationRequest) returns (NotificationResponse) {}
+
+  // update
+  rpc UpdateNotificationPermission(NotificationRequest) returns (NotificationResponse) {}
+
+  // delete
+  rpc DeleteNotificationGroup(NotificationRequest) returns (NotificationResponse) {}
+  rpc DeleteNotificationGroupMember(NotificationRequest) returns (NotificationResponse) {}
+
+  // list
+  rpc ListNotificationPermission(NotificationRequest) returns (NotificationListResponse) {}
+  rpc ListNotificationLog(NotificationRequest) returns (NotificationListResponse) {}
+  rpc ListNotificationGroup(NotificationRequest) returns (NotificationListResponse) {}
+  rpc ListNotificationGroupMember(NotificationRequest) returns (NotificationListResponse) {}
+}
+
+message EditNotificationPermissionParam {
+  string ID = 1;
+  string notificationType = 2;
+  repeated NotificationServiceTypePermissionParam serviceType = 3;
+  string productID = 4;
+  NotificationPermissionRecipientsParam recipients = 5;
+}
+
+message NotificationServiceTypePermissionParam {
+  string type = 1;
+  bool isMandatory = 2;
+}
+
+message NotificationPermissionRecipientsParam {
+  repeated string users = 1;
+  string group = 2;
+}
+
+message NotificationRequest {
+  SendNotificationRequest sendNotificationRequest = 1;
+  NotificationTemplate notificationTemplate = 2;
+  NotificationList notificationList = 3;
+  NotificationRetry notificationRetry = 4;
+  NotificationGroupParam notificationGroupParam = 5;
+  NotificationGroupMemberParam notificationGroupMemberParam = 6;
+  EditNotificationPermissionParam notificationPermission = 7;
+  NotificationPermissionListParam notificationPermissionList = 8;
+  NotificationLogListParam notificationLogListParam = 9;
+  NotificationGroupListParam notificationGroupListParam = 10;
+}
+
+message NotificationGroupMemberParam {
+  string id = 1;
+  string groupID = 2;
+  repeated string userID = 3;
+  string created_at = 4;
+  string created_by = 5;
+  string updated_at = 6;
+  string updated_by = 7;
+}
+
+message NotificationGroupListParam {
+  int32 page = 1;
+  int32 limit = 2;
+  string groupID = 3;
+  string groupName = 4;
+}
+
+message NotificationPermissionListParam {
+  string key = 1;
+}
+
+message NotificationLogListParam {
+  string product = 1;
+  string channel = 2;
+  string content = 3;
+  LogListDateRange daterange = 4;
+}
+
+message LogListDateRange {
+  string from = 1;
+  string to = 2;
+}
+
+message NotificationContentRequest {
+  string key = 1;
+  string value = 2;
+}
+
+message SendNotificationRequest {
+  string productID = 1;
+  string serviceType = 2;
+  string notificationType = 3;
+  repeated string to = 4;
+  repeated string  cc = 5;
+  repeated NotificationContentRequest keyValContent = 6;
+  string content = 7;
+  string from = 8;
+  ContentType contentType = 9;
+  string trackerID = 10; // for logging and retry ID
+}
+
+message NotificationResponse {
+  CrudResponse response = 1;
+}
+
+message NotificationListResponse {
+  PageInfo pageInfo = 1;
+  repeated NotificationPermissionList permissionList = 2;
+  repeated NotificationLog logList = 3;
+  repeated NotificationGroupList notificationGroupList = 4;
+  repeated NotificationGroupMemberList notificationGroupMemberList = 5;
+}
+
+message NotificationGroupList {
+  string ID = 1;
+  string name = 2;
+  string description = 3;
+}
+
+message NotificationGroupMemberList {
+  string ID = 1;
+  string groupID = 2;
+  string name = 3;
+  string email = 4;
+}
+
+message NotificationPermissionList {
+  string ID = 1;
+  string notificationType = 2;
+  repeated NotificationServiceTypePermission serviceType = 3;
+  NotificationProductPermission product = 4;
+  NotificationPermissionRecipients recipients = 5;
+  string orgID = 6;
+}
+
+message NotificationServiceTypePermission {
+  string type = 1;
+  bool isMandatory = 2;
+}
+
+message NotificationProductPermission {
+  string productID = 1;
+  string productName = 2;
+}
+
+message NotificationPermissionRecipients {
+  repeated NotificationPermissionRecipientUsers users = 1;
+  NotificationPermissionRecipientUsers group = 2;
+}
+
+message NotificationPermissionRecipientUsers {
+  string ID = 1;
+  string name = 2;
+}
+
+message NotificationTemplate {
+  string id = 1;
+  string serviceType = 2;
+  string notificationType = 3;
+  string template = 4;
+  string subject = 5;
+  string created_at = 6;
+  string created_by = 7;
+  string updated_at = 8;
+  string updated_by = 9;
+}
+
+message NotificationList {
+  string id = 1;
+  string serviceType = 2;
+  string content = 3;
+  string isReadAt = 4;
+  string senderId = 5;
+  string recipientId = 6;
+  string companyId = 7;
+  string created_at = 8;
+  string created_by = 9;
+  string updated_at = 10;
+  string updated_by = 11;
+}
+
+message NotificationRetry {
+  string id = 1;
+  string serviceType = 2;
+  string content = 3;
+  int32 retryCount = 4;
+  string senderId = 5;
+  string recipientId = 6;
+  string ccId = 7;
+  string companyId = 8;
+  string created_at = 9;
+  string created_by = 10;
+  string updated_at = 11;
+  string updated_by = 12;
+}
+
+message NotificationGroupParam {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string orgID = 4;
+  string created_at = 5;
+  string created_by = 6;
+  string updated_at = 7;
+  string updated_by = 8;
+}
+
+message NotificationLog {
+  string ID = 1;
+  string serviceType = 2;
+  string content = 3;
+  string status = 4;
+  string product = 5;
+  string created_at = 6;
+  string created_by = 7;
+  string updated_at = 8;
+  string updated_by = 9;
+  string orgID = 10;
+}

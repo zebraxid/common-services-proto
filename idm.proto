@@ -1,0 +1,471 @@
+syntax = "proto3";
+
+import "core.proto";
+
+package proto;
+
+service Auth {
+  rpc RequestToken(CoreRequest) returns (AuthResponse) {}
+  rpc RefreshToken(CoreRequest) returns (AuthResponse) {}
+  rpc AuthorizeToken(CoreRequest) returns (AuthResponse) {}
+  rpc LogoutToken(CoreRequest) returns (AuthResponse) {}
+  // product
+  rpc GetProduct(RequestPayload) returns (ListResponse) {}
+  rpc ListProduct(RequestPayload) returns (ListResponse) {}
+  rpc CreateProduct(RequestPayload) returns (ProductResponse) {}
+  rpc UpdateProduct(RequestPayload) returns (ProductResponse) {}
+  rpc DeleteProduct(RequestPayload) returns (ProductResponse) {}
+  // product organization
+  rpc ListProductOrganization(RequestPayload) returns (ListResponse) {}
+  rpc CreateProductOrganization(RequestPayload) returns (ProductResponse) {}
+  rpc UpdateProductOrganization(RequestPayload) returns (ProductResponse) {}
+  rpc DeleteProductOrganization(RequestPayload) returns (ProductResponse) {}
+  // user
+  rpc ListUser(RequestPayload) returns (ListResponse) {}
+  rpc CreateUser(RequestPayload) returns (Response) {}
+  rpc UpdateUser(RequestPayload) returns (Response) {}
+  rpc DeleteUser(RequestPayload) returns (Response) {}
+  // role
+  rpc ListRole(RequestPayload) returns (ListResponse) {}
+  rpc CreateRole(RequestPayload) returns (Response) {}
+  rpc UpdateRole(RequestPayload) returns (Response) {}
+  rpc DeleteRole(RequestPayload) returns (Response) {}
+  // organization
+  rpc ListOrganization(RequestPayload) returns (ListResponse) {}
+  rpc CreateOrganization(RequestPayload) returns (Response) {}
+  rpc UpdateOrganization(RequestPayload) returns (Response) {}
+  rpc DeleteOrganization(RequestPayload) returns (Response) {}
+  // permission
+  rpc ListPermission(RequestPayload) returns (ListResponse) {}
+  rpc CreatePermission(RequestPayload) returns (Response) {}
+  rpc UpdatePermission(RequestPayload) returns (Response) {}
+  rpc DeletePermission(RequestPayload) returns (Response) {}
+  // role permission
+  rpc ListRolePermission(RequestPayload) returns (ListResponse) {}
+  rpc CreateRolePermission(RequestPayload) returns (Response) {}
+  rpc UpdateRolePermission(RequestPayload) returns (Response) {}
+  rpc DeleteRolePermission(RequestPayload) returns (Response) {}
+  // change and reset password
+  rpc ChangePassword(RequestPayload) returns (Response) {}
+  rpc ResetPassword(RequestPayload) returns (Response) {}
+  // one time password request
+  rpc OneTimePassword(RequestPayload) returns (Response) {}
+  //profile
+  rpc GetProfile(RequestPayload) returns (ListResponse) {}
+  rpc UpdateProfile(RequestPayload) returns (Response) {}
+  // ABAC (CasbinPolicy)
+  rpc AddCasbinPolicy(CasbinPolicyPayload) returns (Response) {}
+  rpc RemoveCasbinPolicy(CasbinPolicyPayload) returns (Response) {}
+  rpc ValidateCasbinPolicy(CasbinPolicyPayload) returns (Response) {}
+  // ABAC (AttributePolicy)
+  rpc ListAttributePolicy(RequestPayload) returns (ListResponse) {}
+  rpc CreateAttributePolicy(RequestPayload) returns (Response) {}
+  rpc UpdateAttributePolicy(RequestPayload) returns (Response) {}
+  rpc DeleteAttributePolicy(RequestPayload) returns (Response) {}
+  rpc ListCasbinPolicy(RequestPayload) returns (ListResponse) {}
+  // DMAA List User
+  rpc DMAAListUser(RequestPayload) returns (ListResponse) {}
+}
+
+message CoreRequest {
+  string userID = 1;
+  string password = 2;
+  string token = 3;
+  string refreshToken = 4;
+  InputUser inputUser = 5;
+  string roleID = 6;
+  string orgID = 7;
+  string permissionID = 8;
+  InputRole inputRole = 9;
+  InputOrganization inputOrganization = 10;
+  InputPermission inputPermission = 11;
+}
+
+message InputUser {
+  string userID = 1;
+  string name = 2;
+  string password = 3;
+  string roleId = 4;
+  string orgId = 5;
+}
+
+message InputRole {
+  string roleID = 1;
+  string roleName = 2;
+}
+
+message InputOrganization {
+  string orgID = 1;
+  string orgName = 2;
+  string orgInfo = 3;
+}
+
+message InputPermission {
+  string permissionID = 1;
+  string permissionName = 2;
+}
+
+message ListResponse {
+  PageInfo pageInfo = 1;
+  ProductResponse listProduct = 2;
+  ProductResponse listProductOrganization = 3;
+  UserResponse listUser = 4;
+  RoleResponse listRole = 5;
+  OrganizationResponse listOrganization = 6;
+  PermissionResponse listPermission = 7;
+  RolePermissionResponse listRolePermission = 8;
+  ProfileData profile = 9;
+  AttributePolicyResponse listAttributePolicy = 10;
+  CasbinPolicyResponse casbinPolicyResponse = 11;
+}
+
+message CasbinPolicyResponse {
+  repeated ListCasbinPolicy listCasbinPolicy = 1;
+}
+
+message ListCasbinPolicy {
+  string ID = 1;
+  string name = 2;
+  string product = 3;
+  string module = 4;
+  string attribute = 5;
+  string act = 6;
+  string objID = 7;
+}
+
+message AttributePolicyResponse {
+  repeated ListAttributePolicy listAttributePolicy = 1;
+}
+
+message ListAttributePolicy {
+  string ID = 1;
+  string name = 2;
+  string product = 3;
+  string module = 4;
+  string attribute = 5;
+}
+
+message AuthResponse {
+  AuthData authData = 1;
+}
+
+message AuthData {
+  string userID = 1;
+  string userName = 2;
+  string ID = 3;
+  string token = 4;
+  string refreshToken = 5;
+  int64 expireAt = 6;
+  int64 issuedAt = 7;
+  string issuer = 8;
+  bool isPublic = 9;
+  bool enabled = 10;
+  UserAccess userAccess = 11;
+  string message = 12;
+  UserOrg userOrg = 13;
+  string remoteIP = 14;
+  repeated ProdOrg userProd = 15;
+}
+
+message ProfileData {
+  string userID = 1;
+  string userName = 2;
+  string ID = 3;
+  bool isPublic = 4;
+  bool enabled = 5;
+  UserAccess userAccess = 6;
+  UserOrg userOrg = 7;
+  repeated ProdOrg userProd = 8;
+  string phone = 9;
+  string location = 10;
+  bool mustChangePwd = 11;
+}
+
+message UserAccess {
+  string roleID = 1;
+  string roleName = 2;
+  string roleType = 3;
+  repeated string permission = 4;
+}
+
+message UserOrg {
+  string orgID = 1;
+  string orgCode = 2;
+  string orgName = 3;
+  string parentOrgID = 4;
+  string parentOrgCode = 5;
+  string parentOrgName = 6;
+  repeated ProdOrg prodOrg = 7;
+}
+
+message ProdOrg {
+  string prodID = 1;
+  string prodName = 2;
+  string prodPath = 3;
+}
+
+message SearchParam {
+  SearchField search = 1;
+  int32 limit = 2;
+  int32 page = 3;
+}
+
+message SearchField {
+  FieldName fieldName = 1;
+  Comparison comparison = 2;
+  string value = 3;
+}
+
+message ProductPayload {
+  string name = 2;
+  string description = 3;
+  string path = 4;
+}
+
+message ProductOrganizationPayload {
+  string productID = 1;
+  string orgID = 2;
+}
+
+message OrganizationPayload {
+  string code = 1 ;
+  string name = 2;
+  string info = 3;
+  string address = 4;
+  string phone = 5;
+  string web = 6;
+  bool isChild = 7;
+}
+
+message PermissionPayload {
+  string ID = 1 ;
+  string name = 2;
+}
+
+message RolePayload {
+  string name = 1;
+  string type = 2;
+  repeated string permissionID = 3;
+}
+
+message RolePermissionPayload {
+  string roleID = 1 ;
+  string permissionID = 2;
+}
+
+message UserPayload {
+  string ID = 1 ;
+  string name = 2;
+  string password = 3 ;
+  string roleid = 4;
+  string orgid = 5 ;
+  string location = 6;
+  string phone = 7;
+  string resetCode = 8;
+  bool enabled = 9;
+  string otp = 10;
+  bool mustChangePwd = 11;
+  string otpCreatedAt = 12;
+}
+
+message UserInfoPayload {
+  string ID = 1 ;
+  string name = 2;
+  string roleid = 3;
+  string orgid = 4 ;
+  string location = 5;
+  string phone = 6;
+  bool enabled = 7;
+}
+
+message RequestPayload {
+  string ID = 1;
+  SearchParam param = 2;
+  ProductPayload product = 3;
+  ProductOrganizationPayload productOrganization = 4;
+  OrganizationPayload organization = 5 ;
+  PermissionPayload permission = 6 ;
+  RolePayload role = 7;
+  RolePermissionPayload rolepermission = 8;
+  UserPayload user = 9;
+  UserInfoPayload userInfo = 10;
+  InputRolePermission inputRolePermission = 12;
+  InputChangePassword inputChangePassword = 13;
+  InputResetPassword inputResetPassword = 14;
+  InputUpdateProfile inputUpdateProfile = 15;
+  InputOneTimePassword inputOneTimePassword = 16;
+  InputAttributePolicy inputAttributePolicy = 17;
+  ListCasbinPolicyParam listCasbinPolicyParam = 18;
+  DMAAListUserParam dmaaListUserParam = 19;
+}
+
+message DMAAListUserParam {
+  string userID = 1;
+  repeated string permission = 2;
+}
+
+message InputAttributePolicy {
+  string ID = 1;
+  string name = 2;
+  string productID = 3;
+  string moduleCode = 4;
+  string attribute = 5;
+}
+
+message ProductProduct {
+  string ID = 1;
+  string name = 2;
+  string description = 3;
+  string path = 4;
+  repeated ProductModule modules = 5;
+}
+
+message ProductModule {
+  string code = 1;
+  string name =  2;
+}
+
+message ProductOrganization {
+  string productID = 1;
+  string productName = 2;
+  string orgID = 3;
+  string organizationName = 4;
+  string productDescription = 5;
+}
+
+message ProductResponse {
+  repeated ProductProduct product = 1;
+  repeated ProductOrganization productOrganization = 2;
+  Response response = 3;
+}
+
+message Response {
+  string message = 1;
+  int32 status = 2;
+  string ID = 3;
+}
+
+
+// User
+message UserResponse {
+  repeated UserData user = 1;
+}
+
+message UserData {
+  string ID = 1;
+  string userID = 2;
+  string name = 3;
+  string password = 4;
+  string location = 5;
+  string phone = 6;
+  RoleData role = 7;
+  OrganizationData organization = 8;
+  repeated ProductProduct product = 9;
+  bool enabled = 10;
+
+}
+
+// Role
+message RoleResponse {
+  repeated RoleData role = 1;
+}
+
+message RoleData {
+  string roleID = 1;
+  string roleName = 2;
+  string type = 3;
+}
+
+// Organization
+message OrganizationResponse {
+  repeated OrganizationData org = 1;
+}
+
+message OrganizationData {
+  string orgID = 1;
+  string orgCode = 2;
+  string orgName = 3;
+  string orgInfo = 4;
+  string orgAddress = 5;
+  string orgPhone = 6;
+  string orgWeb = 7;
+  string orgParentID = 8;
+  bool IsChild = 9;
+  repeated ChildOrganizationData childOrg = 10;
+  string clientAdminRoleID = 11;
+}
+
+message ChildOrganizationData {
+  string orgID = 1;
+  string orgCode = 2;
+  string orgName = 3;
+}
+
+// Permission
+message PermissionResponse {
+  repeated PermissionData permission = 1;
+}
+
+message PermissionData {
+  string permissionID = 1;
+  string permissionName = 2;
+}
+
+// RolePermission
+message RolePermissionResponse {
+  repeated RolePermissionData rolepermission = 1;
+}
+
+message RolePermissionData {
+  string roleID = 1;
+  string roleName = 2;
+  string permissionID = 3;
+  string permissionName = 4;
+  string productID = 5;
+  string productName = 6;
+}
+
+message InputRolePermission {
+  string roleID = 1;
+  string permissionID = 2;
+}
+
+message InputChangePassword {
+  string userID = 1;
+  string oldPass = 2;
+  string newPass = 3;
+}
+
+message InputResetPassword {
+  string email = 1;
+  string resetCode = 2;
+  string newPass = 3;
+}
+
+message InputUpdateProfile {
+  string name = 1;
+  string location = 2;
+  string phone = 3;
+}
+
+message CasbinPolicyPayload {
+  string app = 1;
+  string module = 2;
+  string subject = 3;
+  string attr = 4;
+  string objID = 5;
+  string act = 6;
+}
+
+message InputOneTimePassword {
+  string ID = 1;
+  string to = 2;
+  string otp = 3;
+  string otpAction = 4;
+}
+
+message ListCasbinPolicyParam {
+  string app = 1;
+  string module = 2;
+  string subject = 3;
+}

@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "proto";
+
+message CrudResponse {
+  int32 status = 1;
+  string message = 2;
+}
+
+enum ContentType {
+  KEY_VALUE_TEXT = 0;
+  PLAIN_TEXT = 1;
+  HTML_TEXT = 2;
+}
+
+enum FieldName {
+    ID = 0;
+    NAME = 1;
+    PID = 2;
+    RESET_CODE = 3;
+    ORG_ID = 4;
+    OTP = 5;
+    OTP_CREATED_AT = 6;
+}
+
+enum Comparison {
+    EQUAL = 0;
+    LESS = 1;
+    GERATER = 2;
+    LESSEQUAL = 3;
+    GREATEREQUAL = 4;
+    LIKE = 5;
+}
+
+message PageInfo {
+  int32 page = 1;
+  int32 limit = 2;
+  int32 total = 3;
+}
