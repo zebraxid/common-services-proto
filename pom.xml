@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>id.zebrax</groupId>
-    <artifactId>zxcommon-proto</artifactId>
+    <artifactId>common-services-proto</artifactId>
     <name>ZX Common Services Proto Library</name>
     <description>ZX Common Services Proto for Java</description>
-    <version>1.0.0</version>
+    <version>latest</version>
 
     <properties>
         <grpc.version>1.22.1</grpc.version>
