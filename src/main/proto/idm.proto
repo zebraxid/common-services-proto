@@ -137,6 +137,7 @@ message ListCasbinPolicy {
   string attribute = 5;
   string act = 6;
   string objID = 7;
+  string subject = 8;
 }
 
 message AttributePolicyResponse {
@@ -474,4 +475,5 @@ message ListCasbinPolicyParam {
   string app = 1;
   string module = 2;
   string subject = 3;
+  string objID = 4;
 }
