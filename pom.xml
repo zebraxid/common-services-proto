@@ -8,7 +8,7 @@
     <artifactId>common-services-proto</artifactId>
     <name>ZX Common Services Proto Library</name>
     <description>ZX Common Services Proto for Java</description>
-    <version>latest</version>
+    <version>0.0.1</version>
 
     <properties>
         <grpc.version>1.22.1</grpc.version>
