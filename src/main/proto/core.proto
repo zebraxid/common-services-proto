@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package proto;
+package commonproto;
 
-option go_package = "proto";
+option go_package = "commonproto";
 option java_multiple_files = true;
 option java_package = "id.zebrax.common";
 option java_outer_classname = "CoreProto";

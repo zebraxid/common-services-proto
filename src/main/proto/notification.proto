@@ -2,12 +2,12 @@ syntax = "proto3";
 
 import "core.proto";
 
-option go_package = "proto";
+option go_package = "commonproto";
 option java_multiple_files = true;
 option java_package = "id.zebrax.common";
 option java_outer_classname = "NotificationProto";
 
-package proto;
+package commonproto;
 
 service Notification {
   // create
