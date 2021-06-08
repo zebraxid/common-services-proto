@@ -46,6 +46,7 @@ type NotificationService interface {
 	CreateNotificationGroup(ctx context.Context, in *NotificationRequest, opts ...client.CallOption) (*NotificationResponse, error)
 	CreateNotificationGroupMember(ctx context.Context, in *NotificationRequest, opts ...client.CallOption) (*NotificationResponse, error)
 	SendNotification(ctx context.Context, in *NotificationRequest, opts ...client.CallOption) (*NotificationResponse, error)
+	BulkSendNotification(ctx context.Context, in *NotificationRequest, opts ...client.CallOption) (*NotificationResponse, error)
 	// update
 	UpdateNotificationPermission(ctx context.Context, in *NotificationRequest, opts ...client.CallOption) (*NotificationResponse, error)
 	// delete
@@ -92,6 +93,16 @@ func (c *notificationService) CreateNotificationGroupMember(ctx context.Context,
 
 func (c *notificationService) SendNotification(ctx context.Context, in *NotificationRequest, opts ...client.CallOption) (*NotificationResponse, error) {
 	req := c.c.NewRequest(c.name, "Notification.SendNotification", in)
+	out := new(NotificationResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *notificationService) BulkSendNotification(ctx context.Context, in *NotificationRequest, opts ...client.CallOption) (*NotificationResponse, error) {
+	req := c.c.NewRequest(c.name, "Notification.BulkSendNotification", in)
 	out := new(NotificationResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -177,6 +188,7 @@ type NotificationHandler interface {
 	CreateNotificationGroup(context.Context, *NotificationRequest, *NotificationResponse) error
 	CreateNotificationGroupMember(context.Context, *NotificationRequest, *NotificationResponse) error
 	SendNotification(context.Context, *NotificationRequest, *NotificationResponse) error
+	BulkSendNotification(context.Context, *NotificationRequest, *NotificationResponse) error
 	// update
 	UpdateNotificationPermission(context.Context, *NotificationRequest, *NotificationResponse) error
 	// delete
@@ -194,6 +206,7 @@ func RegisterNotificationHandler(s server.Server, hdlr NotificationHandler, opts
 		CreateNotificationGroup(ctx context.Context, in *NotificationRequest, out *NotificationResponse) error
 		CreateNotificationGroupMember(ctx context.Context, in *NotificationRequest, out *NotificationResponse) error
 		SendNotification(ctx context.Context, in *NotificationRequest, out *NotificationResponse) error
+		BulkSendNotification(ctx context.Context, in *NotificationRequest, out *NotificationResponse) error
 		UpdateNotificationPermission(ctx context.Context, in *NotificationRequest, out *NotificationResponse) error
 		DeleteNotificationGroup(ctx context.Context, in *NotificationRequest, out *NotificationResponse) error
 		DeleteNotificationGroupMember(ctx context.Context, in *NotificationRequest, out *NotificationResponse) error
@@ -223,6 +236,10 @@ func (h *notificationHandler) CreateNotificationGroupMember(ctx context.Context,
 
 func (h *notificationHandler) SendNotification(ctx context.Context, in *NotificationRequest, out *NotificationResponse) error {
 	return h.NotificationHandler.SendNotification(ctx, in, out)
+}
+
+func (h *notificationHandler) BulkSendNotification(ctx context.Context, in *NotificationRequest, out *NotificationResponse) error {
+	return h.NotificationHandler.BulkSendNotification(ctx, in, out)
 }
 
 func (h *notificationHandler) UpdateNotificationPermission(ctx context.Context, in *NotificationRequest, out *NotificationResponse) error {
