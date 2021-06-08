@@ -63,6 +63,7 @@ service Auth {
   rpc AddCasbinPolicy(CasbinPolicyPayload) returns (Response) {}
   rpc RemoveCasbinPolicy(CasbinPolicyPayload) returns (Response) {}
   rpc ValidateCasbinPolicy(CasbinPolicyPayload) returns (Response) {}
+  rpc BulkAddCasbinPolicy(BulkCasbinPolicyPayload) returns (Response) {}
   // ABAC (AttributePolicy)
   rpc ListAttributePolicy(RequestPayload) returns (ListResponse) {}
   rpc CreateAttributePolicy(RequestPayload) returns (Response) {}
@@ -138,6 +139,7 @@ message ListCasbinPolicy {
   string act = 6;
   string objID = 7;
   string subject = 8;
+  UserData userData = 9;
 }
 
 message AttributePolicyResponse {
@@ -453,6 +455,10 @@ message InputUpdateProfile {
   string name = 1;
   string location = 2;
   string phone = 3;
+}
+
+message BulkCasbinPolicyPayload {
+  repeated CasbinPolicyPayload casbinPolicyPayloads = 1;
 }
 
 message CasbinPolicyPayload {

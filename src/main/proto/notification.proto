@@ -14,6 +14,7 @@ service Notification {
   rpc CreateNotificationGroup(NotificationRequest) returns (NotificationResponse) {}
   rpc CreateNotificationGroupMember(NotificationRequest) returns (NotificationResponse) {}
   rpc SendNotification(NotificationRequest) returns (NotificationResponse) {}
+  rpc BulkSendNotification(NotificationRequest) returns (NotificationResponse) {}
 
   // update
   rpc UpdateNotificationPermission(NotificationRequest) returns (NotificationResponse) {}
@@ -58,6 +59,7 @@ message NotificationRequest {
   NotificationPermissionListParam notificationPermissionList = 8;
   NotificationLogListParam notificationLogListParam = 9;
   NotificationGroupListParam notificationGroupListParam = 10;
+  repeated SendNotificationRequest bulkSendNotificationRequest = 11;
 }
 
 message NotificationGroupMemberParam {
