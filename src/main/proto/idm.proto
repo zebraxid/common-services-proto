@@ -64,12 +64,14 @@ service Auth {
   rpc RemoveCasbinPolicy(CasbinPolicyPayload) returns (Response) {}
   rpc ValidateCasbinPolicy(CasbinPolicyPayload) returns (Response) {}
   rpc BulkAddCasbinPolicy(BulkCasbinPolicyPayload) returns (Response) {}
+  rpc BulkRemoveCasbinPolicy(BulkCasbinPolicyPayload) returns (Response) {}
   // ABAC (AttributePolicy)
   rpc ListAttributePolicy(RequestPayload) returns (ListResponse) {}
   rpc CreateAttributePolicy(RequestPayload) returns (Response) {}
   rpc UpdateAttributePolicy(RequestPayload) returns (Response) {}
   rpc DeleteAttributePolicy(RequestPayload) returns (Response) {}
   rpc ListCasbinPolicy(RequestPayload) returns (ListResponse) {}
+  rpc BulkListCasbinPolicy(RequestPayload) returns (ListResponse) {}
   // DMAA List User
   rpc DMAAListUser(RequestPayload) returns (ListResponse) {}
 }
@@ -306,6 +308,7 @@ message RequestPayload {
   InputAttributePolicy inputAttributePolicy = 17;
   ListCasbinPolicyParam listCasbinPolicyParam = 18;
   DMAAListUserParam dmaaListUserParam = 19;
+  repeated ListCasbinPolicyParam bulkListCasbinPolicyParam = 20;
 }
 
 message DMAAListUserParam {
