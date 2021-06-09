@@ -11,9 +11,8 @@ import (
 
 import (
 	context "context"
-	api "github.com/micro/go-micro/v2/api"
-	client "github.com/micro/go-micro/v2/client"
-	server "github.com/micro/go-micro/v2/server"
+	client "github.com/micro/go-micro/client"
+	server "github.com/micro/go-micro/server"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -28,16 +27,9 @@ var _ = math.Inf
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 // Reference imports to suppress errors if they are not otherwise used.
-var _ api.Endpoint
 var _ context.Context
 var _ client.Option
 var _ server.Option
-
-// Api Endpoints for Auth service
-
-func NewAuthEndpoints() []*api.Endpoint {
-	return []*api.Endpoint{}
-}
 
 // Client API for Auth service
 
@@ -95,12 +87,14 @@ type AuthService interface {
 	RemoveCasbinPolicy(ctx context.Context, in *CasbinPolicyPayload, opts ...client.CallOption) (*Response, error)
 	ValidateCasbinPolicy(ctx context.Context, in *CasbinPolicyPayload, opts ...client.CallOption) (*Response, error)
 	BulkAddCasbinPolicy(ctx context.Context, in *BulkCasbinPolicyPayload, opts ...client.CallOption) (*Response, error)
+	BulkRemoveCasbinPolicy(ctx context.Context, in *BulkCasbinPolicyPayload, opts ...client.CallOption) (*Response, error)
 	// ABAC (AttributePolicy)
 	ListAttributePolicy(ctx context.Context, in *RequestPayload, opts ...client.CallOption) (*ListResponse, error)
 	CreateAttributePolicy(ctx context.Context, in *RequestPayload, opts ...client.CallOption) (*Response, error)
 	UpdateAttributePolicy(ctx context.Context, in *RequestPayload, opts ...client.CallOption) (*Response, error)
 	DeleteAttributePolicy(ctx context.Context, in *RequestPayload, opts ...client.CallOption) (*Response, error)
 	ListCasbinPolicy(ctx context.Context, in *RequestPayload, opts ...client.CallOption) (*ListResponse, error)
+	BulkListCasbinPolicy(ctx context.Context, in *RequestPayload, opts ...client.CallOption) (*ListResponse, error)
 	// DMAA List User
 	DMAAListUser(ctx context.Context, in *RequestPayload, opts ...client.CallOption) (*ListResponse, error)
 }
@@ -111,6 +105,12 @@ type authService struct {
 }
 
 func NewAuthService(name string, c client.Client) AuthService {
+	if c == nil {
+		c = client.NewClient()
+	}
+	if len(name) == 0 {
+		name = "commonproto"
+	}
 	return &authService{
 		c:    c,
 		name: name,
@@ -537,6 +537,16 @@ func (c *authService) BulkAddCasbinPolicy(ctx context.Context, in *BulkCasbinPol
 	return out, nil
 }
 
+func (c *authService) BulkRemoveCasbinPolicy(ctx context.Context, in *BulkCasbinPolicyPayload, opts ...client.CallOption) (*Response, error) {
+	req := c.c.NewRequest(c.name, "Auth.BulkRemoveCasbinPolicy", in)
+	out := new(Response)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *authService) ListAttributePolicy(ctx context.Context, in *RequestPayload, opts ...client.CallOption) (*ListResponse, error) {
 	req := c.c.NewRequest(c.name, "Auth.ListAttributePolicy", in)
 	out := new(ListResponse)
@@ -579,6 +589,16 @@ func (c *authService) DeleteAttributePolicy(ctx context.Context, in *RequestPayl
 
 func (c *authService) ListCasbinPolicy(ctx context.Context, in *RequestPayload, opts ...client.CallOption) (*ListResponse, error) {
 	req := c.c.NewRequest(c.name, "Auth.ListCasbinPolicy", in)
+	out := new(ListResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authService) BulkListCasbinPolicy(ctx context.Context, in *RequestPayload, opts ...client.CallOption) (*ListResponse, error) {
+	req := c.c.NewRequest(c.name, "Auth.BulkListCasbinPolicy", in)
 	out := new(ListResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -653,12 +673,14 @@ type AuthHandler interface {
 	RemoveCasbinPolicy(context.Context, *CasbinPolicyPayload, *Response) error
 	ValidateCasbinPolicy(context.Context, *CasbinPolicyPayload, *Response) error
 	BulkAddCasbinPolicy(context.Context, *BulkCasbinPolicyPayload, *Response) error
+	BulkRemoveCasbinPolicy(context.Context, *BulkCasbinPolicyPayload, *Response) error
 	// ABAC (AttributePolicy)
 	ListAttributePolicy(context.Context, *RequestPayload, *ListResponse) error
 	CreateAttributePolicy(context.Context, *RequestPayload, *Response) error
 	UpdateAttributePolicy(context.Context, *RequestPayload, *Response) error
 	DeleteAttributePolicy(context.Context, *RequestPayload, *Response) error
 	ListCasbinPolicy(context.Context, *RequestPayload, *ListResponse) error
+	BulkListCasbinPolicy(context.Context, *RequestPayload, *ListResponse) error
 	// DMAA List User
 	DMAAListUser(context.Context, *RequestPayload, *ListResponse) error
 }
@@ -707,11 +729,13 @@ func RegisterAuthHandler(s server.Server, hdlr AuthHandler, opts ...server.Handl
 		RemoveCasbinPolicy(ctx context.Context, in *CasbinPolicyPayload, out *Response) error
 		ValidateCasbinPolicy(ctx context.Context, in *CasbinPolicyPayload, out *Response) error
 		BulkAddCasbinPolicy(ctx context.Context, in *BulkCasbinPolicyPayload, out *Response) error
+		BulkRemoveCasbinPolicy(ctx context.Context, in *BulkCasbinPolicyPayload, out *Response) error
 		ListAttributePolicy(ctx context.Context, in *RequestPayload, out *ListResponse) error
 		CreateAttributePolicy(ctx context.Context, in *RequestPayload, out *Response) error
 		UpdateAttributePolicy(ctx context.Context, in *RequestPayload, out *Response) error
 		DeleteAttributePolicy(ctx context.Context, in *RequestPayload, out *Response) error
 		ListCasbinPolicy(ctx context.Context, in *RequestPayload, out *ListResponse) error
+		BulkListCasbinPolicy(ctx context.Context, in *RequestPayload, out *ListResponse) error
 		DMAAListUser(ctx context.Context, in *RequestPayload, out *ListResponse) error
 	}
 	type Auth struct {
@@ -893,6 +917,10 @@ func (h *authHandler) BulkAddCasbinPolicy(ctx context.Context, in *BulkCasbinPol
 	return h.AuthHandler.BulkAddCasbinPolicy(ctx, in, out)
 }
 
+func (h *authHandler) BulkRemoveCasbinPolicy(ctx context.Context, in *BulkCasbinPolicyPayload, out *Response) error {
+	return h.AuthHandler.BulkRemoveCasbinPolicy(ctx, in, out)
+}
+
 func (h *authHandler) ListAttributePolicy(ctx context.Context, in *RequestPayload, out *ListResponse) error {
 	return h.AuthHandler.ListAttributePolicy(ctx, in, out)
 }
@@ -911,6 +939,10 @@ func (h *authHandler) DeleteAttributePolicy(ctx context.Context, in *RequestPayl
 
 func (h *authHandler) ListCasbinPolicy(ctx context.Context, in *RequestPayload, out *ListResponse) error {
 	return h.AuthHandler.ListCasbinPolicy(ctx, in, out)
+}
+
+func (h *authHandler) BulkListCasbinPolicy(ctx context.Context, in *RequestPayload, out *ListResponse) error {
+	return h.AuthHandler.BulkListCasbinPolicy(ctx, in, out)
 }
 
 func (h *authHandler) DMAAListUser(ctx context.Context, in *RequestPayload, out *ListResponse) error {
