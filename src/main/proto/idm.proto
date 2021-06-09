@@ -126,6 +126,7 @@ message ListResponse {
   ProfileData profile = 9;
   AttributePolicyResponse listAttributePolicy = 10;
   CasbinPolicyResponse casbinPolicyResponse = 11;
+  repeated CasbinPolicyResponse bulkCasbinPolicyResponse = 12;
 }
 
 message CasbinPolicyResponse {
