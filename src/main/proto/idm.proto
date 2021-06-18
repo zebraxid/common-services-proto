@@ -468,7 +468,7 @@ message BulkCasbinPolicyPayload {
 }
 
 message BulkReplaceCasbinPolicyPayload {
-  repeated ReplaceCasbinPolicyPayload old = 1;
+  repeated ReplaceCasbinPolicyPayload payloads = 1;
 }
 
 message ReplaceCasbinPolicyPayload {
