@@ -90,6 +90,7 @@ message CoreRequest {
   InputRole inputRole = 9;
   InputOrganization inputOrganization = 10;
   InputPermission inputPermission = 11;
+  string productID = 12;
 }
 
 message InputUser {
