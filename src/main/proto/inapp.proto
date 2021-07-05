@@ -22,6 +22,7 @@ message InAppMessage {
   string subject = 5;
   string content = 6;
   string createdby = 7;
+  string createdat = 8;
 }
 
 message SendMessageRequest {
