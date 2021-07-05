@@ -15,12 +15,13 @@ service InAppNotification {
 }
 
 message InAppMessage {
-  string product = 1;
-  string sender = 2;
-  string recipient = 3;
-  string subject = 4;
-  string content = 5;
-  string createdby = 6;
+  string ID = 1;
+  string product = 2;
+  string sender = 3;
+  string recipient = 4;
+  string subject = 5;
+  string content = 6;
+  string createdby = 7;
 }
 
 message SendMessageRequest {
