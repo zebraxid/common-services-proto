@@ -42,8 +42,8 @@ func NewInAppNotificationEndpoints() []*api.Endpoint {
 // Client API for InAppNotification service
 
 type InAppNotificationService interface {
-	SendMessage(ctx context.Context, in *SendMessageRequest, opts ...client.CallOption) (*InAppNotifRequestResponse, error)
-	GetMessages(ctx context.Context, in *GetMessagesRequest, opts ...client.CallOption) (*InAppNotifRequestResponse, error)
+	SendMessage(ctx context.Context, in *SendMessageRequest, opts ...client.CallOption) (*InAppNotifResponse, error)
+	GetMessages(ctx context.Context, in *GetMessagesRequest, opts ...client.CallOption) (*InAppNotifResponse, error)
 }
 
 type inAppNotificationService struct {
@@ -58,9 +58,9 @@ func NewInAppNotificationService(name string, c client.Client) InAppNotification
 	}
 }
 
-func (c *inAppNotificationService) SendMessage(ctx context.Context, in *SendMessageRequest, opts ...client.CallOption) (*InAppNotifRequestResponse, error) {
+func (c *inAppNotificationService) SendMessage(ctx context.Context, in *SendMessageRequest, opts ...client.CallOption) (*InAppNotifResponse, error) {
 	req := c.c.NewRequest(c.name, "InAppNotification.SendMessage", in)
-	out := new(InAppNotifRequestResponse)
+	out := new(InAppNotifResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -68,9 +68,9 @@ func (c *inAppNotificationService) SendMessage(ctx context.Context, in *SendMess
 	return out, nil
 }
 
-func (c *inAppNotificationService) GetMessages(ctx context.Context, in *GetMessagesRequest, opts ...client.CallOption) (*InAppNotifRequestResponse, error) {
+func (c *inAppNotificationService) GetMessages(ctx context.Context, in *GetMessagesRequest, opts ...client.CallOption) (*InAppNotifResponse, error) {
 	req := c.c.NewRequest(c.name, "InAppNotification.GetMessages", in)
-	out := new(InAppNotifRequestResponse)
+	out := new(InAppNotifResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -81,14 +81,14 @@ func (c *inAppNotificationService) GetMessages(ctx context.Context, in *GetMessa
 // Server API for InAppNotification service
 
 type InAppNotificationHandler interface {
-	SendMessage(context.Context, *SendMessageRequest, *InAppNotifRequestResponse) error
-	GetMessages(context.Context, *GetMessagesRequest, *InAppNotifRequestResponse) error
+	SendMessage(context.Context, *SendMessageRequest, *InAppNotifResponse) error
+	GetMessages(context.Context, *GetMessagesRequest, *InAppNotifResponse) error
 }
 
 func RegisterInAppNotificationHandler(s server.Server, hdlr InAppNotificationHandler, opts ...server.HandlerOption) error {
 	type inAppNotification interface {
-		SendMessage(ctx context.Context, in *SendMessageRequest, out *InAppNotifRequestResponse) error
-		GetMessages(ctx context.Context, in *GetMessagesRequest, out *InAppNotifRequestResponse) error
+		SendMessage(ctx context.Context, in *SendMessageRequest, out *InAppNotifResponse) error
+		GetMessages(ctx context.Context, in *GetMessagesRequest, out *InAppNotifResponse) error
 	}
 	type InAppNotification struct {
 		inAppNotification
@@ -101,10 +101,10 @@ type inAppNotificationHandler struct {
 	InAppNotificationHandler
 }
 
-func (h *inAppNotificationHandler) SendMessage(ctx context.Context, in *SendMessageRequest, out *InAppNotifRequestResponse) error {
+func (h *inAppNotificationHandler) SendMessage(ctx context.Context, in *SendMessageRequest, out *InAppNotifResponse) error {
 	return h.InAppNotificationHandler.SendMessage(ctx, in, out)
 }
 
-func (h *inAppNotificationHandler) GetMessages(ctx context.Context, in *GetMessagesRequest, out *InAppNotifRequestResponse) error {
+func (h *inAppNotificationHandler) GetMessages(ctx context.Context, in *GetMessagesRequest, out *InAppNotifResponse) error {
 	return h.InAppNotificationHandler.GetMessages(ctx, in, out)
 }
