@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+import "core.proto";
+
+option go_package = "commonproto";
+option java_multiple_files = true;
+option java_package = "id.zebrax.common";
+option java_outer_classname = "InAppProto";
+
+package commonproto;
+
+service InAppNotification {
+  rpc SendMessage(SendMessageRequest) returns (InAppNotifRequestResponse) {}
+  rpc GetMessages(GetMessagesRequest) returns (InAppNotifRequestResponse) {}
+}
+
+message InAppMessage {
+  string product = 1;
+  string sender = 2;
+  string recipient = 3;
+  string subject = 4;
+  string content = 5;
+  string createdby = 6;
+}
+
+message SendMessageRequest {
+  repeated string recipient = 1;
+  InAppMessage message = 2;
+}
+
+message GetMessagesRequest {
+  string recipient = 1;
+}
+
+message InAppNotifRequestResponse {
+  CrudResponse sendMessageResponse = 1;
+  repeated InAppMessage messages = 2;
+}
