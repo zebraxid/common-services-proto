@@ -10,8 +10,8 @@ option java_outer_classname = "InAppProto";
 package commonproto;
 
 service InAppNotification {
-  rpc SendMessage(SendMessageRequest) returns (InAppNotifRequestResponse) {}
-  rpc GetMessages(GetMessagesRequest) returns (InAppNotifRequestResponse) {}
+  rpc SendMessage(SendMessageRequest) returns (InAppNotifResponse) {}
+  rpc GetMessages(GetMessagesRequest) returns (InAppNotifResponse) {}
 }
 
 message InAppMessage {
@@ -32,7 +32,7 @@ message GetMessagesRequest {
   string recipient = 1;
 }
 
-message InAppNotifRequestResponse {
+message InAppNotifResponse {
   CrudResponse sendMessageResponse = 1;
   repeated InAppMessage messages = 2;
 }
