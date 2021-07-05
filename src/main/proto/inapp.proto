@@ -30,6 +30,8 @@ message SendMessageRequest {
 
 message GetMessagesRequest {
   string recipient = 1;
+  int32 limit = 2;
+  int32 page = 3;
 }
 
 message InAppNotifResponse {
