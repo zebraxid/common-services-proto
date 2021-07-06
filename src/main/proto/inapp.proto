@@ -34,8 +34,9 @@ message SendMessageRequest {
 
 message GetMessagesRequest {
   string recipient = 1;
-  int32 limit = 2;
-  int32 page = 3;
+  string product = 2;
+  int32 limit = 3;
+  int32 page = 4;
 }
 
 message InAppNotifResponse {
