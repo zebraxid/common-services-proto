@@ -44,6 +44,7 @@ func NewInAppNotificationEndpoints() []*api.Endpoint {
 type InAppNotificationService interface {
 	SendMessage(ctx context.Context, in *SendMessageRequest, opts ...client.CallOption) (*InAppNotifResponse, error)
 	GetMessages(ctx context.Context, in *GetMessagesRequest, opts ...client.CallOption) (*InAppNotifResponse, error)
+	ReadMessage(ctx context.Context, in *ReadMessageRequest, opts ...client.CallOption) (*InAppNotifResponse, error)
 }
 
 type inAppNotificationService struct {
@@ -78,17 +79,29 @@ func (c *inAppNotificationService) GetMessages(ctx context.Context, in *GetMessa
 	return out, nil
 }
 
+func (c *inAppNotificationService) ReadMessage(ctx context.Context, in *ReadMessageRequest, opts ...client.CallOption) (*InAppNotifResponse, error) {
+	req := c.c.NewRequest(c.name, "InAppNotification.ReadMessage", in)
+	out := new(InAppNotifResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for InAppNotification service
 
 type InAppNotificationHandler interface {
 	SendMessage(context.Context, *SendMessageRequest, *InAppNotifResponse) error
 	GetMessages(context.Context, *GetMessagesRequest, *InAppNotifResponse) error
+	ReadMessage(context.Context, *ReadMessageRequest, *InAppNotifResponse) error
 }
 
 func RegisterInAppNotificationHandler(s server.Server, hdlr InAppNotificationHandler, opts ...server.HandlerOption) error {
 	type inAppNotification interface {
 		SendMessage(ctx context.Context, in *SendMessageRequest, out *InAppNotifResponse) error
 		GetMessages(ctx context.Context, in *GetMessagesRequest, out *InAppNotifResponse) error
+		ReadMessage(ctx context.Context, in *ReadMessageRequest, out *InAppNotifResponse) error
 	}
 	type InAppNotification struct {
 		inAppNotification
@@ -107,4 +120,8 @@ func (h *inAppNotificationHandler) SendMessage(ctx context.Context, in *SendMess
 
 func (h *inAppNotificationHandler) GetMessages(ctx context.Context, in *GetMessagesRequest, out *InAppNotifResponse) error {
 	return h.InAppNotificationHandler.GetMessages(ctx, in, out)
+}
+
+func (h *inAppNotificationHandler) ReadMessage(ctx context.Context, in *ReadMessageRequest, out *InAppNotifResponse) error {
+	return h.InAppNotificationHandler.ReadMessage(ctx, in, out)
 }
