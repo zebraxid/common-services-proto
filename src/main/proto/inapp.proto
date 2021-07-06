@@ -12,6 +12,7 @@ package commonproto;
 service InAppNotification {
   rpc SendMessage(SendMessageRequest) returns (InAppNotifResponse) {}
   rpc GetMessages(GetMessagesRequest) returns (InAppNotifResponse) {}
+  rpc ReadMessage(ReadMessageRequest) returns (InAppNotifResponse) {}
 }
 
 message InAppMessage {
@@ -21,8 +22,9 @@ message InAppMessage {
   string recipient = 4;
   string subject = 5;
   string content = 6;
-  string createdby = 7;
-  string createdat = 8;
+  bool read = 7;
+  string createdby = 8;
+  string createdat = 9;
 }
 
 message SendMessageRequest {
@@ -39,4 +41,13 @@ message GetMessagesRequest {
 message InAppNotifResponse {
   CrudResponse sendMessageResponse = 1;
   repeated InAppMessage messages = 2;
+}
+
+message ReadMessageRequest {
+  repeated ReadMessage readMessage = 1;
+}
+
+message ReadMessage {
+  string ID = 1;
+  bool read = 2;
 }
