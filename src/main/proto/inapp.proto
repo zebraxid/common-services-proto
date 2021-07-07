@@ -43,6 +43,7 @@ message GetMessagesRequest {
 message InAppNotifResponse {
   CrudResponse sendMessageResponse = 1;
   repeated InAppMessage messages = 2;
+  PageInfo pageInfo = 3;
 }
 
 message ReadMessageRequest {
