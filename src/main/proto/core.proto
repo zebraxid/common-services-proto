@@ -26,6 +26,8 @@ enum FieldName {
     ORG_ID = 4;
     OTP = 5;
     OTP_CREATED_AT = 6;
+    PROD_ID = 7;
+    ROLE_ID = 8;
 }
 
 enum Comparison {
