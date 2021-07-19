@@ -29,6 +29,20 @@ func (_m *InAppNotificationHandler) GetMessages(_a0 context.Context, _a1 *common
 	return r0
 }
 
+// GetMessagesStream provides a mock function with given fields: _a0, _a1, _a2
+func (_m *InAppNotificationHandler) GetMessagesStream(_a0 context.Context, _a1 *commonproto.GetMessagesRequest, _a2 commonproto.InAppNotification_GetMessagesStreamStream) error {
+	ret := _m.Called(_a0, _a1, _a2)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, *commonproto.GetMessagesRequest, commonproto.InAppNotification_GetMessagesStreamStream) error); ok {
+		r0 = rf(_a0, _a1, _a2)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // ReadMessage provides a mock function with given fields: _a0, _a1, _a2
 func (_m *InAppNotificationHandler) ReadMessage(_a0 context.Context, _a1 *commonproto.ReadMessageRequest, _a2 *commonproto.InAppNotifResponse) error {
 	ret := _m.Called(_a0, _a1, _a2)

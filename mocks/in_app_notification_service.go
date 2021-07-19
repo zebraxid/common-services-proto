@@ -46,6 +46,36 @@ func (_m *InAppNotificationService) GetMessages(ctx context.Context, in *commonp
 	return r0, r1
 }
 
+// GetMessagesStream provides a mock function with given fields: ctx, in, opts
+func (_m *InAppNotificationService) GetMessagesStream(ctx context.Context, in *commonproto.GetMessagesRequest, opts ...client.CallOption) (commonproto.InAppNotification_GetMessagesStreamService, error) {
+	_va := make([]interface{}, len(opts))
+	for _i := range opts {
+		_va[_i] = opts[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, ctx, in)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 commonproto.InAppNotification_GetMessagesStreamService
+	if rf, ok := ret.Get(0).(func(context.Context, *commonproto.GetMessagesRequest, ...client.CallOption) commonproto.InAppNotification_GetMessagesStreamService); ok {
+		r0 = rf(ctx, in, opts...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(commonproto.InAppNotification_GetMessagesStreamService)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *commonproto.GetMessagesRequest, ...client.CallOption) error); ok {
+		r1 = rf(ctx, in, opts...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // ReadMessage provides a mock function with given fields: ctx, in, opts
 func (_m *InAppNotificationService) ReadMessage(ctx context.Context, in *commonproto.ReadMessageRequest, opts ...client.CallOption) (*commonproto.InAppNotifResponse, error) {
 	_va := make([]interface{}, len(opts))

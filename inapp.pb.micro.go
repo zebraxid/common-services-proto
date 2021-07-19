@@ -44,6 +44,7 @@ func NewInAppNotificationEndpoints() []*api.Endpoint {
 type InAppNotificationService interface {
 	SendMessage(ctx context.Context, in *SendMessageRequest, opts ...client.CallOption) (*InAppNotifResponse, error)
 	GetMessages(ctx context.Context, in *GetMessagesRequest, opts ...client.CallOption) (*InAppNotifResponse, error)
+	GetMessagesStream(ctx context.Context, in *GetMessagesRequest, opts ...client.CallOption) (InAppNotification_GetMessagesStreamService, error)
 	ReadMessage(ctx context.Context, in *ReadMessageRequest, opts ...client.CallOption) (*InAppNotifResponse, error)
 }
 
@@ -79,6 +80,55 @@ func (c *inAppNotificationService) GetMessages(ctx context.Context, in *GetMessa
 	return out, nil
 }
 
+func (c *inAppNotificationService) GetMessagesStream(ctx context.Context, in *GetMessagesRequest, opts ...client.CallOption) (InAppNotification_GetMessagesStreamService, error) {
+	req := c.c.NewRequest(c.name, "InAppNotification.GetMessagesStream", &GetMessagesRequest{})
+	stream, err := c.c.Stream(ctx, req, opts...)
+	if err != nil {
+		return nil, err
+	}
+	if err := stream.Send(in); err != nil {
+		return nil, err
+	}
+	return &inAppNotificationServiceGetMessagesStream{stream}, nil
+}
+
+type InAppNotification_GetMessagesStreamService interface {
+	Context() context.Context
+	SendMsg(interface{}) error
+	RecvMsg(interface{}) error
+	Close() error
+	Recv() (*InAppNotifResponse, error)
+}
+
+type inAppNotificationServiceGetMessagesStream struct {
+	stream client.Stream
+}
+
+func (x *inAppNotificationServiceGetMessagesStream) Close() error {
+	return x.stream.Close()
+}
+
+func (x *inAppNotificationServiceGetMessagesStream) Context() context.Context {
+	return x.stream.Context()
+}
+
+func (x *inAppNotificationServiceGetMessagesStream) SendMsg(m interface{}) error {
+	return x.stream.Send(m)
+}
+
+func (x *inAppNotificationServiceGetMessagesStream) RecvMsg(m interface{}) error {
+	return x.stream.Recv(m)
+}
+
+func (x *inAppNotificationServiceGetMessagesStream) Recv() (*InAppNotifResponse, error) {
+	m := new(InAppNotifResponse)
+	err := x.stream.Recv(m)
+	if err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 func (c *inAppNotificationService) ReadMessage(ctx context.Context, in *ReadMessageRequest, opts ...client.CallOption) (*InAppNotifResponse, error) {
 	req := c.c.NewRequest(c.name, "InAppNotification.ReadMessage", in)
 	out := new(InAppNotifResponse)
@@ -94,6 +144,7 @@ func (c *inAppNotificationService) ReadMessage(ctx context.Context, in *ReadMess
 type InAppNotificationHandler interface {
 	SendMessage(context.Context, *SendMessageRequest, *InAppNotifResponse) error
 	GetMessages(context.Context, *GetMessagesRequest, *InAppNotifResponse) error
+	GetMessagesStream(context.Context, *GetMessagesRequest, InAppNotification_GetMessagesStreamStream) error
 	ReadMessage(context.Context, *ReadMessageRequest, *InAppNotifResponse) error
 }
 
@@ -101,6 +152,7 @@ func RegisterInAppNotificationHandler(s server.Server, hdlr InAppNotificationHan
 	type inAppNotification interface {
 		SendMessage(ctx context.Context, in *SendMessageRequest, out *InAppNotifResponse) error
 		GetMessages(ctx context.Context, in *GetMessagesRequest, out *InAppNotifResponse) error
+		GetMessagesStream(ctx context.Context, stream server.Stream) error
 		ReadMessage(ctx context.Context, in *ReadMessageRequest, out *InAppNotifResponse) error
 	}
 	type InAppNotification struct {
@@ -120,6 +172,46 @@ func (h *inAppNotificationHandler) SendMessage(ctx context.Context, in *SendMess
 
 func (h *inAppNotificationHandler) GetMessages(ctx context.Context, in *GetMessagesRequest, out *InAppNotifResponse) error {
 	return h.InAppNotificationHandler.GetMessages(ctx, in, out)
+}
+
+func (h *inAppNotificationHandler) GetMessagesStream(ctx context.Context, stream server.Stream) error {
+	m := new(GetMessagesRequest)
+	if err := stream.Recv(m); err != nil {
+		return err
+	}
+	return h.InAppNotificationHandler.GetMessagesStream(ctx, m, &inAppNotificationGetMessagesStreamStream{stream})
+}
+
+type InAppNotification_GetMessagesStreamStream interface {
+	Context() context.Context
+	SendMsg(interface{}) error
+	RecvMsg(interface{}) error
+	Close() error
+	Send(*InAppNotifResponse) error
+}
+
+type inAppNotificationGetMessagesStreamStream struct {
+	stream server.Stream
+}
+
+func (x *inAppNotificationGetMessagesStreamStream) Close() error {
+	return x.stream.Close()
+}
+
+func (x *inAppNotificationGetMessagesStreamStream) Context() context.Context {
+	return x.stream.Context()
+}
+
+func (x *inAppNotificationGetMessagesStreamStream) SendMsg(m interface{}) error {
+	return x.stream.Send(m)
+}
+
+func (x *inAppNotificationGetMessagesStreamStream) RecvMsg(m interface{}) error {
+	return x.stream.Recv(m)
+}
+
+func (x *inAppNotificationGetMessagesStreamStream) Send(m *InAppNotifResponse) error {
+	return x.stream.Send(m)
 }
 
 func (h *inAppNotificationHandler) ReadMessage(ctx context.Context, in *ReadMessageRequest, out *InAppNotifResponse) error {
