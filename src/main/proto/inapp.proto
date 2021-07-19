@@ -12,6 +12,7 @@ package commonproto;
 service InAppNotification {
   rpc SendMessage(SendMessageRequest) returns (InAppNotifResponse) {}
   rpc GetMessages(GetMessagesRequest) returns (InAppNotifResponse) {}
+  rpc GetMessagesStream(GetMessagesRequest) returns (stream InAppNotifResponse) {}
   rpc ReadMessage(ReadMessageRequest) returns (InAppNotifResponse) {}
 }
 
