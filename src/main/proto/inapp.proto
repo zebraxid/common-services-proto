@@ -39,6 +39,8 @@ message GetMessagesRequest {
   int32 limit = 3;
   int32 page = 4;
   string date = 5;
+  string subject = 6;
+  string ID = 7;
 }
 
 message InAppNotifResponse {
