@@ -111,6 +111,7 @@ message SendNotificationRequest {
   string from = 8;
   ContentType contentType = 9;
   string trackerID = 10; // for logging and retry ID
+  string subject = 11; // only for non template message
 }
 
 message NotificationResponse {
