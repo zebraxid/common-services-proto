@@ -315,7 +315,12 @@ message RequestPayload {
   ListCasbinPolicyParam listCasbinPolicyParam = 18;
   DMAAListUserParam dmaaListUserParam = 19;
   repeated ListCasbinPolicyParam bulkListCasbinPolicyParam = 20;
-  repeated UserPayload bulkAddUserGroup = 21;
+  BulkAddUserGroup bulkAddUserGroup = 21;
+}
+
+message BulkAddUserGroup {
+  string groupID = 1;
+  repeated string userID = 2;
 }
 
 message DMAAListUserParam {
