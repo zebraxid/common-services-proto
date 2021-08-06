@@ -41,7 +41,7 @@ service Auth {
   rpc CreateOrganization(RequestPayload) returns (Response) {}
   rpc UpdateOrganization(RequestPayload) returns (Response) {}
   rpc DeleteOrganization(RequestPayload) returns (Response) {}
-  rpc BulkAddUserGroup(BulkAddUserGroup) returns (Response) {}
+  rpc BulkAddUserGroup(BulkAddUserGroupPayload) returns (Response) {}
   rpc DeleteGroup(RequestPayload) returns (Response) {}
   // permission
   rpc ListPermission(RequestPayload) returns (ListResponse) {}
@@ -317,7 +317,7 @@ message RequestPayload {
   repeated ListCasbinPolicyParam bulkListCasbinPolicyParam = 20;
 }
 
-message BulkAddUserGroup {
+message BulkAddUserGroupPayload {
   string groupID = 1;
   repeated string userID = 2;
 }
