@@ -72,7 +72,7 @@ type AuthService interface {
 	CreateOrganization(ctx context.Context, in *RequestPayload, opts ...client.CallOption) (*Response, error)
 	UpdateOrganization(ctx context.Context, in *RequestPayload, opts ...client.CallOption) (*Response, error)
 	DeleteOrganization(ctx context.Context, in *RequestPayload, opts ...client.CallOption) (*Response, error)
-	BulkAddUserGroup(ctx context.Context, in *RequestPayload, opts ...client.CallOption) (*Response, error)
+	BulkAddUserGroup(ctx context.Context, in *BulkAddUserGroupPayload, opts ...client.CallOption) (*Response, error)
 	DeleteGroup(ctx context.Context, in *RequestPayload, opts ...client.CallOption) (*Response, error)
 	// permission
 	ListPermission(ctx context.Context, in *RequestPayload, opts ...client.CallOption) (*ListResponse, error)
@@ -373,7 +373,7 @@ func (c *authService) DeleteOrganization(ctx context.Context, in *RequestPayload
 	return out, nil
 }
 
-func (c *authService) BulkAddUserGroup(ctx context.Context, in *RequestPayload, opts ...client.CallOption) (*Response, error) {
+func (c *authService) BulkAddUserGroup(ctx context.Context, in *BulkAddUserGroupPayload, opts ...client.CallOption) (*Response, error) {
 	req := c.c.NewRequest(c.name, "Auth.BulkAddUserGroup", in)
 	out := new(Response)
 	err := c.c.Call(ctx, req, out, opts...)
@@ -696,7 +696,7 @@ type AuthHandler interface {
 	CreateOrganization(context.Context, *RequestPayload, *Response) error
 	UpdateOrganization(context.Context, *RequestPayload, *Response) error
 	DeleteOrganization(context.Context, *RequestPayload, *Response) error
-	BulkAddUserGroup(context.Context, *RequestPayload, *Response) error
+	BulkAddUserGroup(context.Context, *BulkAddUserGroupPayload, *Response) error
 	DeleteGroup(context.Context, *RequestPayload, *Response) error
 	// permission
 	ListPermission(context.Context, *RequestPayload, *ListResponse) error
@@ -762,7 +762,7 @@ func RegisterAuthHandler(s server.Server, hdlr AuthHandler, opts ...server.Handl
 		CreateOrganization(ctx context.Context, in *RequestPayload, out *Response) error
 		UpdateOrganization(ctx context.Context, in *RequestPayload, out *Response) error
 		DeleteOrganization(ctx context.Context, in *RequestPayload, out *Response) error
-		BulkAddUserGroup(ctx context.Context, in *RequestPayload, out *Response) error
+		BulkAddUserGroup(ctx context.Context, in *BulkAddUserGroupPayload, out *Response) error
 		DeleteGroup(ctx context.Context, in *RequestPayload, out *Response) error
 		ListPermission(ctx context.Context, in *RequestPayload, out *ListResponse) error
 		CreatePermission(ctx context.Context, in *RequestPayload, out *Response) error
@@ -903,7 +903,7 @@ func (h *authHandler) DeleteOrganization(ctx context.Context, in *RequestPayload
 	return h.AuthHandler.DeleteOrganization(ctx, in, out)
 }
 
-func (h *authHandler) BulkAddUserGroup(ctx context.Context, in *RequestPayload, out *Response) error {
+func (h *authHandler) BulkAddUserGroup(ctx context.Context, in *BulkAddUserGroupPayload, out *Response) error {
 	return h.AuthHandler.BulkAddUserGroup(ctx, in, out)
 }
 

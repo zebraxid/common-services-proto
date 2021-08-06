@@ -58,11 +58,11 @@ func (_m *AuthHandler) BulkAddCasbinPolicy(_a0 context.Context, _a1 *commonproto
 }
 
 // BulkAddUserGroup provides a mock function with given fields: _a0, _a1, _a2
-func (_m *AuthHandler) BulkAddUserGroup(_a0 context.Context, _a1 *commonproto.RequestPayload, _a2 *commonproto.Response) error {
+func (_m *AuthHandler) BulkAddUserGroup(_a0 context.Context, _a1 *commonproto.BulkAddUserGroupPayload, _a2 *commonproto.Response) error {
 	ret := _m.Called(_a0, _a1, _a2)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(context.Context, *commonproto.RequestPayload, *commonproto.Response) error); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *commonproto.BulkAddUserGroupPayload, *commonproto.Response) error); ok {
 		r0 = rf(_a0, _a1, _a2)
 	} else {
 		r0 = ret.Error(0)
