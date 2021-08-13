@@ -107,7 +107,7 @@ func (_m *AuthService) BulkAddCasbinPolicy(ctx context.Context, in *commonproto.
 }
 
 // BulkAddUserGroup provides a mock function with given fields: ctx, in, opts
-func (_m *AuthService) BulkAddUserGroup(ctx context.Context, in *commonproto.RequestPayload, opts ...client.CallOption) (*commonproto.Response, error) {
+func (_m *AuthService) BulkAddUserGroup(ctx context.Context, in *commonproto.BulkAddUserGroupPayload, opts ...client.CallOption) (*commonproto.Response, error) {
 	_va := make([]interface{}, len(opts))
 	for _i := range opts {
 		_va[_i] = opts[_i]
@@ -118,7 +118,7 @@ func (_m *AuthService) BulkAddUserGroup(ctx context.Context, in *commonproto.Req
 	ret := _m.Called(_ca...)
 
 	var r0 *commonproto.Response
-	if rf, ok := ret.Get(0).(func(context.Context, *commonproto.RequestPayload, ...client.CallOption) *commonproto.Response); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *commonproto.BulkAddUserGroupPayload, ...client.CallOption) *commonproto.Response); ok {
 		r0 = rf(ctx, in, opts...)
 	} else {
 		if ret.Get(0) != nil {
@@ -127,7 +127,7 @@ func (_m *AuthService) BulkAddUserGroup(ctx context.Context, in *commonproto.Req
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(context.Context, *commonproto.RequestPayload, ...client.CallOption) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *commonproto.BulkAddUserGroupPayload, ...client.CallOption) error); ok {
 		r1 = rf(ctx, in, opts...)
 	} else {
 		r1 = ret.Error(1)
