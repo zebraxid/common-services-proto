@@ -161,6 +161,7 @@ message ListAttributePolicy {
   string product = 3;
   string module = 4;
   string attribute = 5;
+  string organization = 6;
 }
 
 message AuthResponse {
@@ -332,8 +333,9 @@ message InputAttributePolicy {
   string ID = 1;
   string name = 2;
   string productID = 3;
-  string moduleCode = 4;
-  string attribute = 5;
+  string orgID = 4;
+  string moduleCode = 5;
+  string attribute = 6;
 }
 
 message ProductProduct {
