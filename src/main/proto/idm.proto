@@ -160,7 +160,6 @@ message ListAttributePolicy {
   string product = 3;
   string module = 4;
   string attribute = 5;
-  string org = 6;
 }
 
 message AuthResponse {
