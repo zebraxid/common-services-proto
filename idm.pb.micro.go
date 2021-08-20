@@ -43,7 +43,6 @@ func NewAuthEndpoints() []*api.Endpoint {
 
 type AuthService interface {
 	RequestToken(ctx context.Context, in *CoreRequest, opts ...client.CallOption) (*AuthResponse, error)
-	RequestSSOToken(ctx context.Context, in *CoreRequest, opts ...client.CallOption) (*AuthResponse, error)
 	RefreshToken(ctx context.Context, in *CoreRequest, opts ...client.CallOption) (*AuthResponse, error)
 	AuthorizeToken(ctx context.Context, in *CoreRequest, opts ...client.CallOption) (*AuthResponse, error)
 	LogoutToken(ctx context.Context, in *CoreRequest, opts ...client.CallOption) (*AuthResponse, error)
@@ -126,16 +125,6 @@ func NewAuthService(name string, c client.Client) AuthService {
 
 func (c *authService) RequestToken(ctx context.Context, in *CoreRequest, opts ...client.CallOption) (*AuthResponse, error) {
 	req := c.c.NewRequest(c.name, "Auth.RequestToken", in)
-	out := new(AuthResponse)
-	err := c.c.Call(ctx, req, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *authService) RequestSSOToken(ctx context.Context, in *CoreRequest, opts ...client.CallOption) (*AuthResponse, error) {
-	req := c.c.NewRequest(c.name, "Auth.RequestSSOToken", in)
 	out := new(AuthResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -678,7 +667,6 @@ func (c *authService) DMAAListUser(ctx context.Context, in *RequestPayload, opts
 
 type AuthHandler interface {
 	RequestToken(context.Context, *CoreRequest, *AuthResponse) error
-	RequestSSOToken(context.Context, *CoreRequest, *AuthResponse) error
 	RefreshToken(context.Context, *CoreRequest, *AuthResponse) error
 	AuthorizeToken(context.Context, *CoreRequest, *AuthResponse) error
 	LogoutToken(context.Context, *CoreRequest, *AuthResponse) error
@@ -750,7 +738,6 @@ type AuthHandler interface {
 func RegisterAuthHandler(s server.Server, hdlr AuthHandler, opts ...server.HandlerOption) error {
 	type auth interface {
 		RequestToken(ctx context.Context, in *CoreRequest, out *AuthResponse) error
-		RequestSSOToken(ctx context.Context, in *CoreRequest, out *AuthResponse) error
 		RefreshToken(ctx context.Context, in *CoreRequest, out *AuthResponse) error
 		AuthorizeToken(ctx context.Context, in *CoreRequest, out *AuthResponse) error
 		LogoutToken(ctx context.Context, in *CoreRequest, out *AuthResponse) error
@@ -818,10 +805,6 @@ type authHandler struct {
 
 func (h *authHandler) RequestToken(ctx context.Context, in *CoreRequest, out *AuthResponse) error {
 	return h.AuthHandler.RequestToken(ctx, in, out)
-}
-
-func (h *authHandler) RequestSSOToken(ctx context.Context, in *CoreRequest, out *AuthResponse) error {
-	return h.AuthHandler.RequestSSOToken(ctx, in, out)
 }
 
 func (h *authHandler) RefreshToken(ctx context.Context, in *CoreRequest, out *AuthResponse) error {
