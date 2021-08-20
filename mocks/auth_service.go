@@ -257,7 +257,7 @@ func (_m *AuthService) ChangePassword(ctx context.Context, in *commonproto.Reque
 }
 
 // CreateAttributePolicy provides a mock function with given fields: ctx, in, opts
-func (_m *AuthService) CreateAttributePolicy(ctx context.Context, in *commonproto.RequestPayload, opts ...client.CallOption) (*commonproto.Response, error) {
+func (_m *AuthService) CreateAttributePolicy(ctx context.Context, in *commonproto.AttributePolicyRequestPayload, opts ...client.CallOption) (*commonproto.Response, error) {
 	_va := make([]interface{}, len(opts))
 	for _i := range opts {
 		_va[_i] = opts[_i]
@@ -268,7 +268,7 @@ func (_m *AuthService) CreateAttributePolicy(ctx context.Context, in *commonprot
 	ret := _m.Called(_ca...)
 
 	var r0 *commonproto.Response
-	if rf, ok := ret.Get(0).(func(context.Context, *commonproto.RequestPayload, ...client.CallOption) *commonproto.Response); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *commonproto.AttributePolicyRequestPayload, ...client.CallOption) *commonproto.Response); ok {
 		r0 = rf(ctx, in, opts...)
 	} else {
 		if ret.Get(0) != nil {
@@ -277,7 +277,7 @@ func (_m *AuthService) CreateAttributePolicy(ctx context.Context, in *commonprot
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(context.Context, *commonproto.RequestPayload, ...client.CallOption) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *commonproto.AttributePolicyRequestPayload, ...client.CallOption) error); ok {
 		r1 = rf(ctx, in, opts...)
 	} else {
 		r1 = ret.Error(1)
@@ -527,7 +527,7 @@ func (_m *AuthService) DMAAListUser(ctx context.Context, in *commonproto.Request
 }
 
 // DeleteAttributePolicy provides a mock function with given fields: ctx, in, opts
-func (_m *AuthService) DeleteAttributePolicy(ctx context.Context, in *commonproto.RequestPayload, opts ...client.CallOption) (*commonproto.Response, error) {
+func (_m *AuthService) DeleteAttributePolicy(ctx context.Context, in *commonproto.AttributePolicyRequestPayload, opts ...client.CallOption) (*commonproto.Response, error) {
 	_va := make([]interface{}, len(opts))
 	for _i := range opts {
 		_va[_i] = opts[_i]
@@ -538,7 +538,7 @@ func (_m *AuthService) DeleteAttributePolicy(ctx context.Context, in *commonprot
 	ret := _m.Called(_ca...)
 
 	var r0 *commonproto.Response
-	if rf, ok := ret.Get(0).(func(context.Context, *commonproto.RequestPayload, ...client.CallOption) *commonproto.Response); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *commonproto.AttributePolicyRequestPayload, ...client.CallOption) *commonproto.Response); ok {
 		r0 = rf(ctx, in, opts...)
 	} else {
 		if ret.Get(0) != nil {
@@ -547,7 +547,7 @@ func (_m *AuthService) DeleteAttributePolicy(ctx context.Context, in *commonprot
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(context.Context, *commonproto.RequestPayload, ...client.CallOption) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *commonproto.AttributePolicyRequestPayload, ...client.CallOption) error); ok {
 		r1 = rf(ctx, in, opts...)
 	} else {
 		r1 = ret.Error(1)
@@ -857,7 +857,7 @@ func (_m *AuthService) GetProfile(ctx context.Context, in *commonproto.RequestPa
 }
 
 // ListAttributePolicy provides a mock function with given fields: ctx, in, opts
-func (_m *AuthService) ListAttributePolicy(ctx context.Context, in *commonproto.RequestPayload, opts ...client.CallOption) (*commonproto.ListResponse, error) {
+func (_m *AuthService) ListAttributePolicy(ctx context.Context, in *commonproto.AttributePolicyRequestPayload, opts ...client.CallOption) (*commonproto.ListResponse, error) {
 	_va := make([]interface{}, len(opts))
 	for _i := range opts {
 		_va[_i] = opts[_i]
@@ -868,7 +868,7 @@ func (_m *AuthService) ListAttributePolicy(ctx context.Context, in *commonproto.
 	ret := _m.Called(_ca...)
 
 	var r0 *commonproto.ListResponse
-	if rf, ok := ret.Get(0).(func(context.Context, *commonproto.RequestPayload, ...client.CallOption) *commonproto.ListResponse); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *commonproto.AttributePolicyRequestPayload, ...client.CallOption) *commonproto.ListResponse); ok {
 		r0 = rf(ctx, in, opts...)
 	} else {
 		if ret.Get(0) != nil {
@@ -877,7 +877,7 @@ func (_m *AuthService) ListAttributePolicy(ctx context.Context, in *commonproto.
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(context.Context, *commonproto.RequestPayload, ...client.CallOption) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *commonproto.AttributePolicyRequestPayload, ...client.CallOption) error); ok {
 		r1 = rf(ctx, in, opts...)
 	} else {
 		r1 = ret.Error(1)
@@ -1337,7 +1337,7 @@ func (_m *AuthService) ResetPassword(ctx context.Context, in *commonproto.Reques
 }
 
 // UpdateAttributePolicy provides a mock function with given fields: ctx, in, opts
-func (_m *AuthService) UpdateAttributePolicy(ctx context.Context, in *commonproto.RequestPayload, opts ...client.CallOption) (*commonproto.Response, error) {
+func (_m *AuthService) UpdateAttributePolicy(ctx context.Context, in *commonproto.AttributePolicyRequestPayload, opts ...client.CallOption) (*commonproto.Response, error) {
 	_va := make([]interface{}, len(opts))
 	for _i := range opts {
 		_va[_i] = opts[_i]
@@ -1348,7 +1348,7 @@ func (_m *AuthService) UpdateAttributePolicy(ctx context.Context, in *commonprot
 	ret := _m.Called(_ca...)
 
 	var r0 *commonproto.Response
-	if rf, ok := ret.Get(0).(func(context.Context, *commonproto.RequestPayload, ...client.CallOption) *commonproto.Response); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *commonproto.AttributePolicyRequestPayload, ...client.CallOption) *commonproto.Response); ok {
 		r0 = rf(ctx, in, opts...)
 	} else {
 		if ret.Get(0) != nil {
@@ -1357,7 +1357,7 @@ func (_m *AuthService) UpdateAttributePolicy(ctx context.Context, in *commonprot
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(context.Context, *commonproto.RequestPayload, ...client.CallOption) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *commonproto.AttributePolicyRequestPayload, ...client.CallOption) error); ok {
 		r1 = rf(ctx, in, opts...)
 	} else {
 		r1 = ret.Error(1)
