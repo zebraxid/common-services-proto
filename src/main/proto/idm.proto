@@ -70,10 +70,10 @@ service Auth {
   rpc BulkRemoveCasbinPolicy(BulkCasbinPolicyPayload) returns (Response) {}
   rpc BulkReplaceCasbinPolicy(BulkReplaceCasbinPolicyPayload) returns (Response) {}
   // ABAC (AttributePolicy)
-  rpc ListAttributePolicy(RequestPayload) returns (ListResponse) {}
-  rpc CreateAttributePolicy(RequestPayload) returns (Response) {}
-  rpc UpdateAttributePolicy(RequestPayload) returns (Response) {}
-  rpc DeleteAttributePolicy(RequestPayload) returns (Response) {}
+  rpc ListAttributePolicy(AttributePolicyRequestPayload) returns (ListResponse) {}
+  rpc CreateAttributePolicy(AttributePolicyRequestPayload) returns (Response) {}
+  rpc UpdateAttributePolicy(AttributePolicyRequestPayload) returns (Response) {}
+  rpc DeleteAttributePolicy(AttributePolicyRequestPayload) returns (Response) {}
   rpc ListCasbinPolicy(RequestPayload) returns (ListResponse) {}
   rpc BulkListCasbinPolicy(RequestPayload) returns (ListResponse) {}
   // DMAA List User
@@ -160,6 +160,7 @@ message ListAttributePolicy {
   string product = 3;
   string module = 4;
   string attribute = 5;
+  string organization = 6;
 }
 
 message AuthResponse {
@@ -311,10 +312,13 @@ message RequestPayload {
   InputResetPassword inputResetPassword = 14;
   InputUpdateProfile inputUpdateProfile = 15;
   InputOneTimePassword inputOneTimePassword = 16;
-  InputAttributePolicy inputAttributePolicy = 17;
-  ListCasbinPolicyParam listCasbinPolicyParam = 18;
-  DMAAListUserParam dmaaListUserParam = 19;
-  repeated ListCasbinPolicyParam bulkListCasbinPolicyParam = 20;
+  ListCasbinPolicyParam listCasbinPolicyParam = 17;
+  DMAAListUserParam dmaaListUserParam = 18;
+  repeated ListCasbinPolicyParam bulkListCasbinPolicyParam = 19;
+}
+
+message AttributePolicyRequestPayload {
+  InputAttributePolicy inputAttributePolicy = 1;
 }
 
 message BulkAddUserGroupPayload {
