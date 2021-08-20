@@ -318,7 +318,8 @@ message RequestPayload {
 }
 
 message AttributePolicyRequestPayload {
-  InputAttributePolicy inputAttributePolicy = 1;
+  SearchParam param = 1;
+  InputAttributePolicy inputAttributePolicy = 2;
 }
 
 message BulkAddUserGroupPayload {
