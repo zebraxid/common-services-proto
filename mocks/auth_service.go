@@ -1276,6 +1276,36 @@ func (_m *AuthService) ReplaceCasbinPolicy(ctx context.Context, in *commonproto.
 	return r0, r1
 }
 
+// RequestSSOToken provides a mock function with given fields: ctx, in, opts
+func (_m *AuthService) RequestSSOToken(ctx context.Context, in *commonproto.CoreRequest, opts ...client.CallOption) (*commonproto.AuthResponse, error) {
+	_va := make([]interface{}, len(opts))
+	for _i := range opts {
+		_va[_i] = opts[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, ctx, in)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *commonproto.AuthResponse
+	if rf, ok := ret.Get(0).(func(context.Context, *commonproto.CoreRequest, ...client.CallOption) *commonproto.AuthResponse); ok {
+		r0 = rf(ctx, in, opts...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*commonproto.AuthResponse)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *commonproto.CoreRequest, ...client.CallOption) error); ok {
+		r1 = rf(ctx, in, opts...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // RequestToken provides a mock function with given fields: ctx, in, opts
 func (_m *AuthService) RequestToken(ctx context.Context, in *commonproto.CoreRequest, opts ...client.CallOption) (*commonproto.AuthResponse, error) {
 	_va := make([]interface{}, len(opts))
