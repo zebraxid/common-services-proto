@@ -42,6 +42,8 @@ func NewAuthEndpoints() []*api.Endpoint {
 // Client API for Auth service
 
 type AuthService interface {
+	RequestSSOState(ctx context.Context, in *CoreRequest, opts ...client.CallOption) (*Response, error)
+	ValidateSSOState(ctx context.Context, in *CoreRequest, opts ...client.CallOption) (*Response, error)
 	RequestToken(ctx context.Context, in *CoreRequest, opts ...client.CallOption) (*AuthResponse, error)
 	RequestSSOToken(ctx context.Context, in *CoreRequest, opts ...client.CallOption) (*AuthResponse, error)
 	RefreshToken(ctx context.Context, in *CoreRequest, opts ...client.CallOption) (*AuthResponse, error)
@@ -122,6 +124,26 @@ func NewAuthService(name string, c client.Client) AuthService {
 		c:    c,
 		name: name,
 	}
+}
+
+func (c *authService) RequestSSOState(ctx context.Context, in *CoreRequest, opts ...client.CallOption) (*Response, error) {
+	req := c.c.NewRequest(c.name, "Auth.RequestSSOState", in)
+	out := new(Response)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authService) ValidateSSOState(ctx context.Context, in *CoreRequest, opts ...client.CallOption) (*Response, error) {
+	req := c.c.NewRequest(c.name, "Auth.ValidateSSOState", in)
+	out := new(Response)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *authService) RequestToken(ctx context.Context, in *CoreRequest, opts ...client.CallOption) (*AuthResponse, error) {
@@ -677,6 +699,8 @@ func (c *authService) DMAAListUser(ctx context.Context, in *RequestPayload, opts
 // Server API for Auth service
 
 type AuthHandler interface {
+	RequestSSOState(context.Context, *CoreRequest, *Response) error
+	ValidateSSOState(context.Context, *CoreRequest, *Response) error
 	RequestToken(context.Context, *CoreRequest, *AuthResponse) error
 	RequestSSOToken(context.Context, *CoreRequest, *AuthResponse) error
 	RefreshToken(context.Context, *CoreRequest, *AuthResponse) error
@@ -749,6 +773,8 @@ type AuthHandler interface {
 
 func RegisterAuthHandler(s server.Server, hdlr AuthHandler, opts ...server.HandlerOption) error {
 	type auth interface {
+		RequestSSOState(ctx context.Context, in *CoreRequest, out *Response) error
+		ValidateSSOState(ctx context.Context, in *CoreRequest, out *Response) error
 		RequestToken(ctx context.Context, in *CoreRequest, out *AuthResponse) error
 		RequestSSOToken(ctx context.Context, in *CoreRequest, out *AuthResponse) error
 		RefreshToken(ctx context.Context, in *CoreRequest, out *AuthResponse) error
@@ -814,6 +840,14 @@ func RegisterAuthHandler(s server.Server, hdlr AuthHandler, opts ...server.Handl
 
 type authHandler struct {
 	AuthHandler
+}
+
+func (h *authHandler) RequestSSOState(ctx context.Context, in *CoreRequest, out *Response) error {
+	return h.AuthHandler.RequestSSOState(ctx, in, out)
+}
+
+func (h *authHandler) ValidateSSOState(ctx context.Context, in *CoreRequest, out *Response) error {
+	return h.AuthHandler.ValidateSSOState(ctx, in, out)
 }
 
 func (h *authHandler) RequestToken(ctx context.Context, in *CoreRequest, out *AuthResponse) error {
