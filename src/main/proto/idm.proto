@@ -11,6 +11,8 @@ option java_outer_classname = "IdmProto";
 
 
 service Auth {
+  rpc RequestSSOState(CoreRequest) returns (Response) {}
+  rpc ValidateSSOState(CoreRequest) returns (Response) {}
   rpc RequestToken(CoreRequest) returns (AuthResponse) {}
   rpc RequestSSOToken(CoreRequest) returns (AuthResponse) {}
   rpc RefreshToken(CoreRequest) returns (AuthResponse) {}
