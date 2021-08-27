@@ -257,6 +257,7 @@ message OrganizationPayload {
   string phone = 5;
   string web = 6;
   bool isChild = 7;
+  string authProvider = 8;
 }
 
 message PermissionPayload {
