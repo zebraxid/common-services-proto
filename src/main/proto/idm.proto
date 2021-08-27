@@ -200,6 +200,7 @@ message ProfileData {
   string phone = 9;
   string location = 10;
   bool mustChangePwd = 11;
+  string authProvider = 12;
 }
 
 message UserAccess {
@@ -425,6 +426,7 @@ message OrganizationData {
   bool IsChild = 9;
   repeated ChildOrganizationData childOrg = 10;
   string clientAdminRoleID = 11;
+  string authProvider = 12;
 }
 
 message ChildOrganizationData {
