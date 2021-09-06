@@ -71,7 +71,7 @@ type AuthService interface {
 	UpdateRole(ctx context.Context, in *RequestPayload, opts ...client.CallOption) (*Response, error)
 	DeleteRole(ctx context.Context, in *RequestPayload, opts ...client.CallOption) (*Response, error)
 	// organization
-	ListOrganization(ctx context.Context, in *RequestPayload, opts ...client.CallOption) (*ListResponse, error)
+	ListOrganization(ctx context.Context, in *ListOrganizationRequest, opts ...client.CallOption) (*ListOrganizationResponse, error)
 	CreateOrganization(ctx context.Context, in *RequestPayload, opts ...client.CallOption) (*Response, error)
 	UpdateOrganization(ctx context.Context, in *RequestPayload, opts ...client.CallOption) (*Response, error)
 	DeleteOrganization(ctx context.Context, in *RequestPayload, opts ...client.CallOption) (*Response, error)
@@ -366,9 +366,9 @@ func (c *authService) DeleteRole(ctx context.Context, in *RequestPayload, opts .
 	return out, nil
 }
 
-func (c *authService) ListOrganization(ctx context.Context, in *RequestPayload, opts ...client.CallOption) (*ListResponse, error) {
+func (c *authService) ListOrganization(ctx context.Context, in *ListOrganizationRequest, opts ...client.CallOption) (*ListOrganizationResponse, error) {
 	req := c.c.NewRequest(c.name, "Auth.ListOrganization", in)
-	out := new(ListResponse)
+	out := new(ListOrganizationResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -728,7 +728,7 @@ type AuthHandler interface {
 	UpdateRole(context.Context, *RequestPayload, *Response) error
 	DeleteRole(context.Context, *RequestPayload, *Response) error
 	// organization
-	ListOrganization(context.Context, *RequestPayload, *ListResponse) error
+	ListOrganization(context.Context, *ListOrganizationRequest, *ListOrganizationResponse) error
 	CreateOrganization(context.Context, *RequestPayload, *Response) error
 	UpdateOrganization(context.Context, *RequestPayload, *Response) error
 	DeleteOrganization(context.Context, *RequestPayload, *Response) error
@@ -797,7 +797,7 @@ func RegisterAuthHandler(s server.Server, hdlr AuthHandler, opts ...server.Handl
 		CreateRole(ctx context.Context, in *RequestPayload, out *Response) error
 		UpdateRole(ctx context.Context, in *RequestPayload, out *Response) error
 		DeleteRole(ctx context.Context, in *RequestPayload, out *Response) error
-		ListOrganization(ctx context.Context, in *RequestPayload, out *ListResponse) error
+		ListOrganization(ctx context.Context, in *ListOrganizationRequest, out *ListOrganizationResponse) error
 		CreateOrganization(ctx context.Context, in *RequestPayload, out *Response) error
 		UpdateOrganization(ctx context.Context, in *RequestPayload, out *Response) error
 		DeleteOrganization(ctx context.Context, in *RequestPayload, out *Response) error
@@ -938,7 +938,7 @@ func (h *authHandler) DeleteRole(ctx context.Context, in *RequestPayload, out *R
 	return h.AuthHandler.DeleteRole(ctx, in, out)
 }
 
-func (h *authHandler) ListOrganization(ctx context.Context, in *RequestPayload, out *ListResponse) error {
+func (h *authHandler) ListOrganization(ctx context.Context, in *ListOrganizationRequest, out *ListOrganizationResponse) error {
 	return h.AuthHandler.ListOrganization(ctx, in, out)
 }
 
