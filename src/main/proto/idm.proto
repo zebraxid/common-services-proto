@@ -40,7 +40,7 @@ service Auth {
   rpc UpdateRole(RequestPayload) returns (Response) {}
   rpc DeleteRole(RequestPayload) returns (Response) {}
   // organization
-  rpc ListOrganization(RequestPayload) returns (ListResponse) {}
+  rpc ListOrganization(ListOrganizationRequest) returns (ListOrganizationResponse) {}
   rpc CreateOrganization(RequestPayload) returns (Response) {}
   rpc UpdateOrganization(RequestPayload) returns (Response) {}
   rpc DeleteOrganization(RequestPayload) returns (Response) {}
@@ -128,13 +128,17 @@ message ListResponse {
   ProductResponse listProductOrganization = 3;
   UserResponse listUser = 4;
   RoleResponse listRole = 5;
-  OrganizationResponse listOrganization = 6;
-  PermissionResponse listPermission = 7;
-  RolePermissionResponse listRolePermission = 8;
-  ProfileData profile = 9;
-  AttributePolicyResponse listAttributePolicy = 10;
-  CasbinPolicyResponse casbinPolicyResponse = 11;
-  repeated CasbinPolicyResponse bulkCasbinPolicyResponse = 12;
+  PermissionResponse listPermission = 6;
+  RolePermissionResponse listRolePermission = 7;
+  ProfileData profile = 8;
+  AttributePolicyResponse listAttributePolicy = 9;
+  CasbinPolicyResponse casbinPolicyResponse = 10;
+  repeated CasbinPolicyResponse bulkCasbinPolicyResponse = 11;
+}
+
+message ListOrganizationResponse {
+  PageInfo pageInfo = 1;
+  OrganizationResponse listOrganization = 2;
 }
 
 message CasbinPolicyResponse {
@@ -320,6 +324,11 @@ message RequestPayload {
   ListCasbinPolicyParam listCasbinPolicyParam = 16;
   DMAAListUserParam dmaaListUserParam = 17;
   repeated ListCasbinPolicyParam bulkListCasbinPolicyParam = 18;
+}
+
+message ListOrganizationRequest {
+  bool isChild = 1;
+  SearchParam param = 2;
 }
 
 message AttributePolicyRequestPayload {
