@@ -405,7 +405,7 @@ message UserData {
   OrganizationData organization = 8;
   repeated ProductProduct product = 9;
   bool enabled = 10;
-
+  int32 lastActivityUser = 11;
 }
 
 // Role
