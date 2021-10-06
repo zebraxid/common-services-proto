@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option go_package = "commonproto";
+option java_multiple_files = true;
+option java_package = "id.zebrax.common";
+option java_outer_classname = "Audit";
+
+package commonproto;
+
+service AuditTrail {
+  rpc SendLog(SendLogRequest) returns (AuditResponse) {}
+  rpc ReadLog(ReadLogRequest) returns (AuditResponse) {}
+}
+
+
+message SendLogRequest {
+  string log = 1;
+}
+
+message AuditResponse {
+  repeated string log = 1;
+}
+
+message ReadLogRequest {
+  string log  = 1;
+}
