@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "core.proto";
+
 option go_package = "commonproto";
 option java_multiple_files = true;
 option java_package = "id.zebrax.common";
@@ -14,11 +16,12 @@ service AuditTrail {
 
 
 message SendLogRequest {
-  string log = 1;
+  bytes logs = 1;
 }
 
 message AuditResponse {
-  repeated string log = 1;
+  CrudResponse crudResponse = 1;
+  repeated bytes logs = 2;
 }
 
 message ReadLogRequest {
