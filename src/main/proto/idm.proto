@@ -453,6 +453,7 @@ message PermissionResponse {
 message PermissionData {
   string permissionID = 1;
   string permissionName = 2;
+  string productID = 3;
 }
 
 // RolePermission
