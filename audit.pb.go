@@ -151,7 +151,9 @@ func init() {
 	proto.RegisterType((*ReadLogRequest)(nil), "commonproto.ReadLogRequest")
 }
 
-func init() { proto.RegisterFile("audit.proto", fileDescriptor_5594839dd8e38a1b) }
+func init() {
+	proto.RegisterFile("audit.proto", fileDescriptor_5594839dd8e38a1b)
+}
 
 var fileDescriptor_5594839dd8e38a1b = []byte{
 	// 231 bytes of a gzipped FileDescriptorProto
