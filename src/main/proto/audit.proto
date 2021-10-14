@@ -19,10 +19,13 @@ message SendLogRequest {
 }
 
 message AuditResponse {
-  CrudResponse crudResponse = 1;
-  repeated bytes logs = 2;
+  PageInfo pageInfo = 1;
+  CrudResponse crudResponse = 2;
+  repeated bytes logs = 3;
 }
 
 message ReadLogRequest {
   string log  = 1;
+  int32 limit = 2;
+  int32 page = 3;
 }
