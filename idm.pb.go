@@ -4020,9 +4020,7 @@ func init() {
 	proto.RegisterType((*ListCasbinPolicyParam)(nil), "commonproto.ListCasbinPolicyParam")
 }
 
-func init() {
-	proto.RegisterFile("idm.proto", fileDescriptor_382e0121a60b75ce)
-}
+func init() { proto.RegisterFile("idm.proto", fileDescriptor_382e0121a60b75ce) }
 
 var fileDescriptor_382e0121a60b75ce = []byte{
 	// 3332 bytes of a gzipped FileDescriptorProto

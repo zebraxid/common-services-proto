@@ -407,9 +407,7 @@ func init() {
 	proto.RegisterType((*ReadMessage)(nil), "commonproto.ReadMessage")
 }
 
-func init() {
-	proto.RegisterFile("inapp.proto", fileDescriptor_c3f1929be0d77a46)
-}
+func init() { proto.RegisterFile("inapp.proto", fileDescriptor_c3f1929be0d77a46) }
 
 var fileDescriptor_c3f1929be0d77a46 = []byte{
 	// 512 bytes of a gzipped FileDescriptorProto
