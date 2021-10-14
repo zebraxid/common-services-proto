@@ -21,11 +21,28 @@ message SendLogRequest {
 message AuditResponse {
   PageInfo pageInfo = 1;
   CrudResponse crudResponse = 2;
-  repeated bytes logs = 3;
+  repeated AuditRecord logs = 3;
 }
 
 message ReadLogRequest {
-  string log  = 1;
+  string log = 1;
   int32 limit = 2;
   int32 page = 3;
+}
+
+message AuditRecord {
+  string id = 1;
+  string timestamp = 2;
+  string userName = 3;
+  string email = 4;
+  string role = 5;
+  string action = 6;
+  string status = 7;
+  string product = 8;
+  string organization = 9;
+  AuditRecordDetails auditDetails = 10;
+}
+
+message AuditRecordDetails {
+  string details = 1;
 }
