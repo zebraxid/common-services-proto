@@ -14,7 +14,6 @@ service AuditTrail {
   rpc ReadLog(ReadLogRequest) returns (AuditResponse) {}
 }
 
-
 message SendLogRequest {
   bytes logs = 1;
 }
