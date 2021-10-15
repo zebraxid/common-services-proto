@@ -9,6 +9,7 @@ option java_outer_classname = "Audit";
 
 package commonproto;
 
+
 service AuditTrail {
   rpc SendLog(SendLogRequest) returns (AuditResponse) {}
   rpc ReadLog(ReadLogRequest) returns (AuditResponse) {}
