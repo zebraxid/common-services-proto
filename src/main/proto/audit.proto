@@ -31,7 +31,7 @@ message ReadLogRequest {
 }
 
 message AuditRecord {
-  string id = 1;
+  string ID = 1;
   string timestamp = 2;
   string userName = 3;
   string email = 4;
