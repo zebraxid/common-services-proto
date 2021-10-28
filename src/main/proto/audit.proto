@@ -18,7 +18,7 @@ service AuditTrail {
 
 message SendLogRequest {
   bytes logs = 1;
-  repeated bytes logs = 2;
+  repeated bytes bulkLog = 2;
 }
 
 message AuditResponse {
