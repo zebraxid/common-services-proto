@@ -12,11 +12,13 @@ package commonproto;
 
 service AuditTrail {
   rpc SendLog(SendLogRequest) returns (AuditResponse) {}
+  rpc SendBulkLog(SendLogRequest) returns (AuditResponse) {}
   rpc ReadLog(ReadLogRequest) returns (AuditResponse) {}
 }
 
 message SendLogRequest {
   bytes logs = 1;
+  repeated bytes logs = 2;
 }
 
 message AuditResponse {
