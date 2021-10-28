@@ -43,6 +43,7 @@ func NewAuditTrailEndpoints() []*api.Endpoint {
 
 type AuditTrailService interface {
 	SendLog(ctx context.Context, in *SendLogRequest, opts ...client.CallOption) (*AuditResponse, error)
+	SendBulkLog(ctx context.Context, in *SendLogRequest, opts ...client.CallOption) (*AuditResponse, error)
 	ReadLog(ctx context.Context, in *ReadLogRequest, opts ...client.CallOption) (*AuditResponse, error)
 }
 
@@ -68,6 +69,16 @@ func (c *auditTrailService) SendLog(ctx context.Context, in *SendLogRequest, opt
 	return out, nil
 }
 
+func (c *auditTrailService) SendBulkLog(ctx context.Context, in *SendLogRequest, opts ...client.CallOption) (*AuditResponse, error) {
+	req := c.c.NewRequest(c.name, "AuditTrail.SendBulkLog", in)
+	out := new(AuditResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *auditTrailService) ReadLog(ctx context.Context, in *ReadLogRequest, opts ...client.CallOption) (*AuditResponse, error) {
 	req := c.c.NewRequest(c.name, "AuditTrail.ReadLog", in)
 	out := new(AuditResponse)
@@ -82,12 +93,14 @@ func (c *auditTrailService) ReadLog(ctx context.Context, in *ReadLogRequest, opt
 
 type AuditTrailHandler interface {
 	SendLog(context.Context, *SendLogRequest, *AuditResponse) error
+	SendBulkLog(context.Context, *SendLogRequest, *AuditResponse) error
 	ReadLog(context.Context, *ReadLogRequest, *AuditResponse) error
 }
 
 func RegisterAuditTrailHandler(s server.Server, hdlr AuditTrailHandler, opts ...server.HandlerOption) error {
 	type auditTrail interface {
 		SendLog(ctx context.Context, in *SendLogRequest, out *AuditResponse) error
+		SendBulkLog(ctx context.Context, in *SendLogRequest, out *AuditResponse) error
 		ReadLog(ctx context.Context, in *ReadLogRequest, out *AuditResponse) error
 	}
 	type AuditTrail struct {
@@ -103,6 +116,10 @@ type auditTrailHandler struct {
 
 func (h *auditTrailHandler) SendLog(ctx context.Context, in *SendLogRequest, out *AuditResponse) error {
 	return h.AuditTrailHandler.SendLog(ctx, in, out)
+}
+
+func (h *auditTrailHandler) SendBulkLog(ctx context.Context, in *SendLogRequest, out *AuditResponse) error {
+	return h.AuditTrailHandler.SendBulkLog(ctx, in, out)
 }
 
 func (h *auditTrailHandler) ReadLog(ctx context.Context, in *ReadLogRequest, out *AuditResponse) error {
