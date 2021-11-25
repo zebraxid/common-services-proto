@@ -45,6 +45,7 @@ type AuditTrailService interface {
 	SendLog(ctx context.Context, in *SendLogRequest, opts ...client.CallOption) (*AuditResponse, error)
 	SendBulkLog(ctx context.Context, in *SendLogRequest, opts ...client.CallOption) (*AuditResponse, error)
 	ReadLog(ctx context.Context, in *ReadLogRequest, opts ...client.CallOption) (*AuditResponse, error)
+	ActiveUserCount(ctx context.Context, in *ReadLogRequest, opts ...client.CallOption) (*AuditResponse, error)
 }
 
 type auditTrailService struct {
@@ -89,12 +90,23 @@ func (c *auditTrailService) ReadLog(ctx context.Context, in *ReadLogRequest, opt
 	return out, nil
 }
 
+func (c *auditTrailService) ActiveUserCount(ctx context.Context, in *ReadLogRequest, opts ...client.CallOption) (*AuditResponse, error) {
+	req := c.c.NewRequest(c.name, "AuditTrail.ActiveUserCount", in)
+	out := new(AuditResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for AuditTrail service
 
 type AuditTrailHandler interface {
 	SendLog(context.Context, *SendLogRequest, *AuditResponse) error
 	SendBulkLog(context.Context, *SendLogRequest, *AuditResponse) error
 	ReadLog(context.Context, *ReadLogRequest, *AuditResponse) error
+	ActiveUserCount(context.Context, *ReadLogRequest, *AuditResponse) error
 }
 
 func RegisterAuditTrailHandler(s server.Server, hdlr AuditTrailHandler, opts ...server.HandlerOption) error {
@@ -102,6 +114,7 @@ func RegisterAuditTrailHandler(s server.Server, hdlr AuditTrailHandler, opts ...
 		SendLog(ctx context.Context, in *SendLogRequest, out *AuditResponse) error
 		SendBulkLog(ctx context.Context, in *SendLogRequest, out *AuditResponse) error
 		ReadLog(ctx context.Context, in *ReadLogRequest, out *AuditResponse) error
+		ActiveUserCount(ctx context.Context, in *ReadLogRequest, out *AuditResponse) error
 	}
 	type AuditTrail struct {
 		auditTrail
@@ -124,4 +137,8 @@ func (h *auditTrailHandler) SendBulkLog(ctx context.Context, in *SendLogRequest,
 
 func (h *auditTrailHandler) ReadLog(ctx context.Context, in *ReadLogRequest, out *AuditResponse) error {
 	return h.AuditTrailHandler.ReadLog(ctx, in, out)
+}
+
+func (h *auditTrailHandler) ActiveUserCount(ctx context.Context, in *ReadLogRequest, out *AuditResponse) error {
+	return h.AuditTrailHandler.ActiveUserCount(ctx, in, out)
 }

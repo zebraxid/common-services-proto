@@ -14,6 +14,7 @@ service AuditTrail {
   rpc SendLog(SendLogRequest) returns (AuditResponse) {}
   rpc SendBulkLog(SendLogRequest) returns (AuditResponse) {}
   rpc ReadLog(ReadLogRequest) returns (AuditResponse) {}
+  rpc ActiveUserCount(ReadLogRequest) returns (AuditResponse) {}
 }
 
 message SendLogRequest {
@@ -25,12 +26,25 @@ message AuditResponse {
   PageInfo pageInfo = 1;
   CrudResponse crudResponse = 2;
   repeated AuditRecord logs = 3;
+  int32 count = 4;
 }
 
 message ReadLogRequest {
-  string log = 1;
-  int32 limit = 2;
-  int32 page = 3;
+  AuditListParam listParam = 1;
+  AuditAggrParam aggrParam = 2;
+}
+
+message AuditListParam {
+  string search = 1;
+  string date = 2;
+  int32 limit = 3;
+  int32 page = 4;
+}
+
+message AuditAggrParam {
+  string productID = 1;
+  int64 startDateUnix = 2;
+  int64 endDateUnix = 3;
 }
 
 message AuditRecord {
