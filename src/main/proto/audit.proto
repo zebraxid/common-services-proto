@@ -28,9 +28,14 @@ message AuditResponse {
 }
 
 message ReadLogRequest {
-  string log = 1;
-  int32 limit = 2;
-  int32 page = 3;
+  AuditListParam listParam = 1;
+}
+
+message AuditListParam {
+  string search = 1;
+  string date = 2;
+  int32 limit = 3;
+  int32 page = 4;
 }
 
 message AuditRecord {
