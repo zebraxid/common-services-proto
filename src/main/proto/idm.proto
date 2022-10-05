@@ -222,6 +222,7 @@ message UserOrg {
   string parentOrgCode = 5;
   string parentOrgName = 6;
   repeated ProdOrg prodOrg = 7;
+  OrganizationData orgData = 8;
 }
 
 message ProdOrg {
